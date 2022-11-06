@@ -4,6 +4,10 @@ plugins {
     kotlin("jvm") version "1.7.20"
 }
 
+repositories {
+    mavenCentral()
+}
+
 subprojects {
     apply(plugin="kotlin")
     group = "io.github.elizabethlfransen.liz-lang"
