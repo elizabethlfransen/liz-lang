@@ -8,4 +8,6 @@ val String.tokens: List<Token>
     get() = this
         .let(CharStreams::fromString)
         .let(::LizLangLexer)
-        .allTokens
+        .run {
+            allTokens + emitEOF()
+        }

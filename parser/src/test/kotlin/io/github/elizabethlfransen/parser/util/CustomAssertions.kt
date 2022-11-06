@@ -5,9 +5,13 @@ import assertk.assertions.support.expected
 import io.github.elizabethlfransen.lizlang.parser.LizLangLexer
 import kotlin.test.fail
 
-fun Assert<String>.hasTokensExactly(init: TokenDsl.() -> Unit) = given { actual ->
+/**
+ * Asserts that when a string is tokenized the tokens emit exactly what is described by [init].
+ * If [emitEOF] is true EOF is automatically added to expected tokens.
+ */
+fun Assert<String>.hasTokensExactly(emitEOF: Boolean = true, init: TokenDsl.() -> Unit) = given { actual ->
     val actualTokens = actual.tokens
-    val expectedTokens = TokenDsl()
+    val expectedTokens = TokenDsl(emitEOF)
         .apply(init)
         .tokenMatchers
 

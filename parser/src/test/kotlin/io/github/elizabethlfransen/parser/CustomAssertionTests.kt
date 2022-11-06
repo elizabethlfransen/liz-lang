@@ -18,18 +18,18 @@ class CustomAssertionTests {
         val result = assertThat {
             assertThat("test").hasTokensExactly {
                 identifier("test")
-                identifier("lol")
+                eof
             }
         }.isFailure()
         result.isInstanceOf(AssertionError::class)
-        result.hasMessage("expected to have 2 tokens but had 1 tokens")
+        result.hasMessage("expected to have 3 tokens but had 2 tokens")
     }
 
     @Test
     fun `given a token with incorrect type then assertion should fail with message`() {
         val result = assertThat {
             assertThat("test").hasTokensExactly {
-                eof()
+                eof
             }
         }.isFailure()
         result.isInstanceOf(AssertionError::class)
