@@ -10,7 +10,7 @@ import kotlin.test.fail
  * If [emitEOF] is true EOF is automatically added to expected tokens.
  */
 fun Assert<String>.hasTokensExactly(emitEOF: Boolean = true, init: TokenDsl.() -> Unit) = given { actual ->
-    val actualTokens = actual.tokens
+    val actualTokens = actual.tokens()
     val expectedTokens = TokenDsl(emitEOF)
         .apply(init)
         .tokenMatchers
