@@ -22,6 +22,6 @@ class TokenDsl(private val emitEOF: Boolean) {
     }
 
     fun identifier(text: String) {
-        token(LizLangLexer.Identifier, text)
+        token(LizLangLexer.IDENTIFIER, text)
     }
 }

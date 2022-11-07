@@ -51,7 +51,7 @@ class CustomAssertionTests {
     fun `given an expected token with no text and valid type then the assertion should succeed`() {
         assertThat {
             assertThat("test").hasTokensExactly {
-                token(LizLangLexer.Identifier)
+                token(LizLangLexer.IDENTIFIER)
             }
         }.isSuccess()
     }

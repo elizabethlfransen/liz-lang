@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test
 class LexerTests {
     @Test
     fun `lexer should be able to identify an identifier`() {
-        assertThat("test\$_").hasTokensExactly {
-            identifier("test\$_")
+        assertThat("test123\$_").hasTokensExactly {
+            identifier("test123\$_")
         }
     }
 

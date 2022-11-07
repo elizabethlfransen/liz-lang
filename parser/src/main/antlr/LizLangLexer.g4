@@ -1,3 +1,5 @@
 lexer grammar LizLangLexer;
 
-Identifier: [A-Za-z$_]+;
+fragment IDENTIFIER_BODY: IDENTIFIER_START | [0-9];
+fragment IDENTIFIER_START: [A-Za-z$_];
+IDENTIFIER: IDENTIFIER_START IDENTIFIER_BODY*;
