@@ -33,7 +33,7 @@ class CustomAssertionTests {
             }
         }.isFailure()
         result.isInstanceOf(AssertionError::class)
-        result.hasMessage("expected tokens[0] to have type 'EOF' but was 'Identifier'")
+        result.hasMessage("expected tokens[0] to have type 'EOF' but was 'IDENTIFIER'")
     }
 
     @Test
@@ -61,6 +61,52 @@ class CustomAssertionTests {
         assertThat {
             assertThat("test").hasTokensExactly {
                 identifier("test")
+            }
+        }.isSuccess()
+    }
+
+    @Test
+    fun `given an expected token matching the actual token type and text when using the not dsl then the assertion should fail`() {
+        val result = assertThat {
+            assertThat("test").hasTokensExactly {
+                not {
+                    identifier("test")
+                }
+            }
+        }.isFailure()
+        result.isInstanceOf(AssertionError::class)
+        result.hasMessage("expected tokens[0] to not be IDENTIFIER('test') but was IDENTIFIER('test')")
+    }
+
+    @Test
+    fun `given an expected token matching the actual token type and null text when using the not dsl then the assertion should fail`() {
+        val result = assertThat {
+            assertThat("test").hasTokensExactly {
+                not {
+                    identifier
+                }
+            }
+        }.isFailure()
+        result.isInstanceOf(AssertionError::class)
+        result.hasMessage("expected tokens[0] to not be IDENTIFIER but was IDENTIFIER")
+    }
+
+    @Test
+    fun `given an expected token not matching the actual token type when using the not dsl then assertion should succeed`() {
+        assertThat {
+            assertThat("test").hasTokensExactly {
+                not { eof }
+            }
+        }.isSuccess()
+    }
+
+    @Test
+    fun `given an expected token matching the actual token type but not the same text when using the not dsl then assertion should succeed`() {
+        assertThat {
+            assertThat("test").hasTokensExactly {
+                not {
+                    identifier("incorrect")
+                }
             }
         }.isSuccess()
     }
