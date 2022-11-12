@@ -28,4 +28,6 @@ fun Assert<TokenSource>.expectToken(tokenType: Int?, tokenText: String?) = expec
 
 fun Assert<TokenSource>.expectIdentifier(text: String? = null) = expectToken(LizLangLexer.IDENTIFIER, text)
 fun Assert<TokenSource>.expectIntegerLiteral(text: String? = null) = expectToken(LizLangLexer.INTEGER, text)
+fun Assert<TokenSource>.expectDoubleLiteral(text: String? = null) = expectToken(LizLangLexer.DOUBLE, text)
+fun Assert<TokenSource>.expectFloatLiteral(text: String? = null) = expectToken(LizLangLexer.FLOAT, text)
 fun Assert<TokenSource>.expectEOF() = expectToken(LizLangLexer.EOF)

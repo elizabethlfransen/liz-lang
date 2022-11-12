@@ -1,9 +1,6 @@
 package io.github.elizabethlfransen.parser
 
-import io.github.elizabethlfransen.parser.util.expectEOF
-import io.github.elizabethlfransen.parser.util.expectIdentifier
-import io.github.elizabethlfransen.parser.util.expectIntegerLiteral
-import io.github.elizabethlfransen.parser.util.verifyTokens
+import io.github.elizabethlfransen.parser.util.*
 import org.junit.jupiter.api.Test
 
 class LexerTests {
@@ -25,6 +22,41 @@ class LexerTests {
     fun `given an integer literal with underscores an integer token should be emitted`() {
         verifyTokens("1_2_3")
             .expectIntegerLiteral("1_2_3")
+            .expectEOF()
+    }
+
+    @Test
+    fun `given a double with a decimal point and two number strings a double literal should be emitted`() {
+        verifyTokens("123.456")
+            .expectDoubleLiteral("123.456")
+            .expectEOF()
+    }
+
+    @Test
+    fun `given a double with an exponent and no decimal a double literal should be emitted`() {
+        verifyTokens("123e1")
+            .expectDoubleLiteral("123e1")
+            .expectEOF()
+    }
+
+    @Test
+    fun `given a double with an exponent and decimal a double literal should be emitted`() {
+        verifyTokens("123.456e1")
+            .expectDoubleLiteral("123.456e1")
+            .expectEOF()
+    }
+
+    @Test
+    fun `given a double with an 'f' suffix a float should be emitted`() {
+        verifyTokens("1233.456e1f")
+            .expectFloatLiteral("1233.456e1f")
+            .expectEOF()
+    }
+
+    @Test
+    fun `given an integer with a '0x' prefix then an integer token should be emitted`() {
+        verifyTokens("0x123")
+            .expectIntegerLiteral("0x123")
             .expectEOF()
     }
 }
