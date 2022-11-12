@@ -59,4 +59,18 @@ class LexerTests {
             .expectIntegerLiteral("0x123")
             .expectEOF()
     }
+
+    @Test
+    fun `given the literal 'true' then a true token should be emitted`() {
+        verifyTokens("true")
+            .expectTrueLiteral()
+            .expectEOF()
+    }
+
+    @Test
+    fun `given the literal 'false' then a false literal should be emitted`() {
+        verifyTokens("false")
+            .expectFalseLiteral()
+            .expectEOF()
+    }
 }
