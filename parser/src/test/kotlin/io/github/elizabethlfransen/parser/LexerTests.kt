@@ -73,4 +73,34 @@ class LexerTests {
             .expectFalseLiteral()
             .expectEOF()
     }
+
+    @Test
+    fun `given the literal 'False' with different case then a false literal should be emitted`() {
+        verifyTokens("False")
+            .expectFalseLiteral()
+            .expectEOF()
+    }
+
+    @Test
+    fun `given the literal 'True' with different case then a true literal should be emitted`() {
+        verifyTokens("True")
+            .expectTrueLiteral()
+            .expectEOF()
+    }
+
+    @Test
+    fun `given a simple string literal then a string literal should be emitted`() {
+        verifyTokens("\"test\"")
+            .expectStartString()
+            .expectStringCharacter("test")
+            .expectCloseString()
+            .expectEOF()
+    }
+
+    @Test
+    fun `given a character literal then a character literal then a character should be emitted`() {
+        verifyTokens("'t'")
+            .expectCharacterLiteral("'t'")
+            .expectEOF()
+    }
 }

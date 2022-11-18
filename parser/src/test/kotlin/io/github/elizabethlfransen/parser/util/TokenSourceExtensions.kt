@@ -33,5 +33,10 @@ fun Assert<TokenSource>.expectFloatLiteral(text: String? = null) = expectToken(L
 
 fun Assert<TokenSource>.expectTrueLiteral(text: String? = null) = expectToken(LizLangLexer.TRUE, text)
 fun Assert<TokenSource>.expectFalseLiteral(text: String? = null) = expectToken(LizLangLexer.FALSE, text)
+fun Assert<TokenSource>.expectStartString(text: String? = null) = expectToken(LizLangLexer.START_STRING, text)
+
+fun Assert<TokenSource>.expectCharacterLiteral(text: String? = null) =  expectToken(LizLangLexer.CHARACTER, text)
+fun Assert<TokenSource>.expectCloseString(text: String? = null) = expectToken(LizLangLexer.CLOSE_STRING, text)
+fun Assert<TokenSource>.expectStringCharacter(text: String? = null) = expectToken(LizLangLexer.START_STRING, text)
 
 fun Assert<TokenSource>.expectEOF() = expectToken(LizLangLexer.EOF)
