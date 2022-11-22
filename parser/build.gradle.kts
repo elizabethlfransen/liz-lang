@@ -15,6 +15,6 @@ tasks.compileTestKotlin {
 }
 
 tasks.generateGrammarSource {
-    arguments = arguments + listOf("-package", "io.github.elizabethlfransen.lizlang.parser")
+    arguments = arguments + listOf("-package", "io.github.elizabethlfransen.lizlang.parser", "-visitor")
     outputDirectory = project.buildDir.resolve("generated-src/antlr/main/io/github/elizabethlfransen/lizlang/parser")
 }

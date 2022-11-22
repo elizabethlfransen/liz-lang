@@ -4,4 +4,4 @@ options {
     tokenVocab=LizLangLexer;
 }
 
-identifier: Identifier;
+literal: INTEGER;
