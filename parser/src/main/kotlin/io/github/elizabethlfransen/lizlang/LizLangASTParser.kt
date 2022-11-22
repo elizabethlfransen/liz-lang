@@ -30,6 +30,12 @@ open class LizLangASTParser : LizLangBaseVisitor<ASTNode>() {
         return buildLiteralFromContext(ctx, value, ::FloatLiteral)
     }
 
+    override fun visitDoubleLiteral(ctx: LizLangParser.DoubleLiteralContext): ASTNode {
+        val value = ctx.text.replace("_", "")
+            .toDouble()
+        return buildLiteralFromContext(ctx, value, ::DoubleLiteral)
+    }
+
     override fun visitTrueLiteral(ctx: LizLangParser.TrueLiteralContext): ASTNode {
         return buildASTFromContext(ctx, ::TrueLiteral)
     }

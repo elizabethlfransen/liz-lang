@@ -20,6 +20,12 @@ class ASTVerifier(private val actual: Assert<ASTNode>) {
             .isEqualTo(expectedValue)
     }
 
+    fun doubleLiteral(expectedValue: Double) {
+        actual.isInstanceOf(DoubleLiteral::class)
+            .prop(DoubleLiteral::value)
+            .isEqualTo(expectedValue)
+    }
+
     fun trueLiteral() {
         actual.isInstanceOf(TrueLiteral::class)
     }

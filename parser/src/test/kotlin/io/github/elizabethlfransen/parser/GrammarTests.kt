@@ -41,6 +41,22 @@ class GrammarTests {
         }
     }
 
+    @TestFactory
+    fun `given a double literal when parsing a literal ast then a double literal should be parsed`(): Collection<DynamicTest> {
+        return listOf(
+            "123.0" to 123.0,
+            "123.4" to 123.4,
+            "123.4_5" to 123.4_5,
+            "123.4e5" to 123.4e5
+        ).mapToDynamicTest({ (literal, _) -> literal}) { (literal, expected) ->
+            assertThat(literal)
+                .asAST(LizLangParser::literal)
+                .verify {
+                    doubleLiteral(expected)
+                }
+        }
+    }
+
     @Test
     fun `given a true literal when parsing a literal ast then a true literal should be parsed`() {
         assertThat("true")
@@ -58,4 +74,6 @@ class GrammarTests {
                 falseLiteral()
             }
     }
+
+
 }

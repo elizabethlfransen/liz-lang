@@ -4,13 +4,18 @@ options {
     tokenVocab=LizLangLexer;
 }
 
-literal:
-    floatLiteral
-    | intLiteral
+literal
+    : numberLiteral
     | booleanLiteral
+    ;
+numberLiteral
+    : intLiteral
+    | doubleLiteral
+    | floatLiteral
     ;
 booleanLiteral: trueLiteral | falseLiteral;
 intLiteral: INTEGER;
 floatLiteral: FLOAT;
 trueLiteral: TRUE;
 falseLiteral: FALSE;
+doubleLiteral: DOUBLE;
