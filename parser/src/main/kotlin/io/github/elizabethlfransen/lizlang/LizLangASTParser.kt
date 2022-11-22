@@ -4,6 +4,7 @@ import io.github.elizabethlfransen.lizlang.parser.LizLangBaseVisitor
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser.FloatLiteralContext
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser.IntLiteralContext
+import org.antlr.v4.runtime.tree.TerminalNode
 
 /**
  * This class is used to take the result from [LizLangParser] and generate a [ASTNode] which can be used in [ParserVisitor]
@@ -42,6 +43,12 @@ open class LizLangASTParser : LizLangBaseVisitor<ASTNode>() {
 
     override fun visitFalseLiteral(ctx: LizLangParser.FalseLiteralContext): ASTNode {
         return buildASTFromContext(ctx, ::FalseLiteral)
+    }
+
+    override fun visitStringLiteral(ctx: LizLangParser.StringLiteralContext): ASTNode {
+        val value = ctx.STRING_CHARACTER()
+            .joinToString(separator = "", transform = TerminalNode::getText)
+        return buildLiteralFromContext(ctx, value, ::StringLiteral)
     }
 }
 

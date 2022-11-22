@@ -9,9 +9,11 @@ literal
     | doubleLiteral
     | floatLiteral
     | trueLiteral
-    | falseLiteral;
+    | falseLiteral
+    | stringLiteral;
 intLiteral: INTEGER;
 floatLiteral: FLOAT;
 trueLiteral: TRUE;
 falseLiteral: FALSE;
 doubleLiteral: DOUBLE;
+stringLiteral: START_STRING STRING_CHARACTER+ CLOSE_STRING;

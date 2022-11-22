@@ -33,4 +33,10 @@ class ASTVerifier(private val actual: Assert<ASTNode>) {
     fun falseLiteral() {
         actual.isInstanceOf(FalseLiteral::class)
     }
+
+    fun stringLiteral(expectedValue: String) {
+        actual.isInstanceOf(StringLiteral::class)
+            .prop(StringLiteral::value)
+            .isEqualTo(expectedValue)
+    }
 }

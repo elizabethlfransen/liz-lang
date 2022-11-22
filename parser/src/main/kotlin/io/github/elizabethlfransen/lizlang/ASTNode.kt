@@ -50,6 +50,15 @@ data class FalseLiteral(
     override val value: Boolean = false
 }
 
+// Eventually strings will support interpolation and thus the text will not be known at parse time. We will want to have
+// both a string literal known at parse time and a string expression literal that will be compiled at runtime
+data class StringLiteral(
+    override val value: String,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : ASTNode, Literal<String>
+
 @Suppress("SpellCheckingInspection")
 fun <TAST,TValue> buildLiteralFromContext(
     context: ParserRuleContext,
