@@ -2,8 +2,7 @@ package io.github.elizabethlfransen.parser
 
 import assertk.assertThat
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser
-import io.github.elizabethlfransen.parser.util.ast.asAST
-import io.github.elizabethlfransen.parser.util.ast.verify
+import io.github.elizabethlfransen.parser.util.ast.*
 import io.github.elizabethlfransen.parser.util.mapToDynamicTest
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
@@ -19,9 +18,7 @@ class GrammarTests {
         ).mapToDynamicTest({ (literal, _) -> literal}) { (literal, expected) ->
             assertThat(literal)
                 .asAST(LizLangParser::literal)
-                .verify {
-                    intLiteral(expected)
-                }
+                .isIntLiteral(expected)
         }
     }
 
@@ -35,9 +32,7 @@ class GrammarTests {
         ).mapToDynamicTest({ (literal, _) -> literal}) { (literal, expected) ->
             assertThat(literal)
                 .asAST(LizLangParser::literal)
-                .verify {
-                    floatLiteral(expected)
-                }
+                .isFloatLiteral(expected)
         }
     }
 
@@ -51,9 +46,7 @@ class GrammarTests {
         ).mapToDynamicTest({ (literal, _) -> literal}) { (literal, expected) ->
             assertThat(literal)
                 .asAST(LizLangParser::literal)
-                .verify {
-                    doubleLiteral(expected)
-                }
+                .isDoubleLiteral(expected)
         }
     }
 
@@ -61,46 +54,36 @@ class GrammarTests {
     fun `given a true literal when parsing a literal ast then a true literal should be parsed`() {
         assertThat("true")
             .asAST(LizLangParser::literal)
-            .verify {
-                trueLiteral()
-            }
+            .isTrueLiteral()
     }
 
     @Test
     fun `given a false literal when parsing a literal ast then a false literal should be parsed`() {
         assertThat("false")
             .asAST(LizLangParser::literal)
-            .verify {
-                falseLiteral()
-            }
+            .isFalseLiteral()
     }
 
     @Test
     fun `given a string literal when parsing a literal ast then a string literal should be parsed`() {
         assertThat("\"test\"")
             .asAST(LizLangParser::literal)
-            .verify {
-                stringLiteral("test")
-            }
+            .isStringLiteral("test")
     }
 
     @Test
     fun `given a char literal when parsing a literal ast then a char literal should be parsed`() {
         assertThat("'a'")
             .asAST(LizLangParser::literal)
-            .verify {
-                charLiteral('a')
-            }
+            .isCharLiteral('a')
     }
 
     @Test
     fun `given a literal expression when parsing then the expression should contain a single non-null literal`() {
         assertThat("123")
             .asAST(LizLangParser::literalExpression)
-            .verify {
-                literalExpression {
-                    literal()
-                }
+            .isLiteralExpression { child ->
+                child.isIntLiteral(123)
             }
     }
 }
