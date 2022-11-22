@@ -17,12 +17,12 @@ subprojects {
     repositories {
         mavenCentral()
     }
-
     dependencies {
-        testImplementation(kotlin("test"))
+
+        testImplementation(platform("org.junit:junit-bom:5.9.1"))
+        testImplementation("org.junit.jupiter:junit-jupiter")
         testImplementation(platform("org.mockito:mockito-bom:4.8.1"))
         testImplementation("org.mockito:mockito-core")
-        testImplementation("org.mockito:mockito-junit-jupiter")
         testImplementation("org.mockito:mockito-junit-jupiter")
         testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
         testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
@@ -30,6 +30,9 @@ subprojects {
 
     tasks.test {
         useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
     }
 
     tasks.withType<KotlinCompile> {
