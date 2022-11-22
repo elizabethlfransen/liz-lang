@@ -4,4 +4,6 @@ options {
     tokenVocab=LizLangLexer;
 }
 
-literal: INTEGER;
+literal: floatLiteral | intLiteral;
+intLiteral: INTEGER;
+floatLiteral: FLOAT;

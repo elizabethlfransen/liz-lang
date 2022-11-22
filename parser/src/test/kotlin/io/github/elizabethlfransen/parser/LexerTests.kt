@@ -47,6 +47,13 @@ class LexerTests {
     }
 
     @Test
+    fun `given an integer with an 'f' suffix a float should be emitted`() {
+        verifyTokens("123f")
+            .expectFloatLiteral("123f")
+            .expectEOF()
+    }
+
+    @Test
     fun `given a double with an 'f' suffix a float should be emitted`() {
         verifyTokens("1233.456e1f")
             .expectFloatLiteral("1233.456e1f")

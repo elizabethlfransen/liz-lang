@@ -2,25 +2,32 @@ package io.github.elizabethlfransen.lizlang
 
 import io.github.elizabethlfransen.lizlang.parser.LizLangBaseVisitor
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser
-import java.lang.Integer.parseInt
+import io.github.elizabethlfransen.lizlang.parser.LizLangParser.FloatLiteralContext
+import io.github.elizabethlfransen.lizlang.parser.LizLangParser.IntLiteralContext
 
 /**
- * This class is used to take the result from [LizLangParser] and generate a [AST] which can be used in [ParserVisitor]
+ * This class is used to take the result from [LizLangParser] and generate a [ASTNode] which can be used in [ParserVisitor]
  */
-open class LizLangASTParser : LizLangBaseVisitor<AST>() {
-    override fun visitLiteral(ctx: LizLangParser.LiteralContext): AST {
+open class LizLangASTParser : LizLangBaseVisitor<ASTNode>() {
+    override fun visitIntLiteral(ctx: IntLiteralContext): ASTNode {
         // remove underscores
         var intLiteral = ctx.text.replace("_", "")
         var radix = 10
         // if hexadecimal number then remove prefix and change radix to 16
-        if(intLiteral.startsWith("0x", ignoreCase = true)) {
+        if (intLiteral.startsWith("0x", ignoreCase = true)) {
             intLiteral = intLiteral.substring(2)
             radix = 16
         }
         // parse the integer
-        val value = parseInt(intLiteral, radix)
+        val value = intLiteral.toInt(radix)
 
-        return buildASTFromContext(ctx) { text, start, stop -> IntLiteral(value, text, start, stop) }
+        return buildLiteralFromContext(ctx, value, ::IntLiteral)
+    }
+
+    override fun visitFloatLiteral(ctx: FloatLiteralContext): ASTNode {
+        val value = ctx.text.replace("_", "")
+            .toFloat()
+        return buildLiteralFromContext(ctx, value, ::FloatLiteral)
     }
 }
 
