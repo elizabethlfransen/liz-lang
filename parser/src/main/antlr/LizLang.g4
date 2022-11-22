@@ -4,6 +4,8 @@ options {
     tokenVocab=LizLangLexer;
 }
 
+literalExpression: literal;
+
 literal
     : intLiteral
     | doubleLiteral

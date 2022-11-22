@@ -3,6 +3,7 @@ package io.github.elizabethlfransen.parser.util.ast
 import assertk.Assert
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
 import assertk.assertions.prop
 import io.github.elizabethlfransen.lizlang.*
 
@@ -44,5 +45,16 @@ class ASTVerifier(private val actual: Assert<ASTNode>) {
         actual.isInstanceOf(CharacterLiteral::class)
             .prop(CharacterLiteral::value)
             .isEqualTo(expectedValue)
+    }
+
+    fun literal() {
+        actual.isInstanceOf(ASTLiteral::class)
+    }
+
+    fun literalExpression(verifyChild: ASTVerifier.() -> Unit) {
+        val child = actual.isInstanceOf(LiteralExpression::class)
+            .prop(LiteralExpression::child)
+        child.isNotNull()
+        return ASTVerifier(child).verifyChild()
     }
 }

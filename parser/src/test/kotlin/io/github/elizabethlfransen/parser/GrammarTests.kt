@@ -93,4 +93,14 @@ class GrammarTests {
             }
     }
 
+    @Test
+    fun `given a literal expression when parsing then the expression should contain a single non-null literal`() {
+        assertThat("123")
+            .asAST(LizLangParser::literalExpression)
+            .verify {
+                literalExpression {
+                    literal()
+                }
+            }
+    }
 }

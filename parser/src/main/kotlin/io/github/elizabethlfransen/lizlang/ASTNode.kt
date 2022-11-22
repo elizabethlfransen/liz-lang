@@ -9,36 +9,46 @@ sealed interface ASTNode {
     val stop: TextLocation
 }
 
-sealed interface Literal<T> {
+sealed interface ASTLiteral<T> : ASTNode {
     val value: T
 }
+
+sealed interface ASTExpression : ASTNode {
+}
+
+data class LiteralExpression(
+    val child: ASTLiteral<*>,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : ASTExpression
 
 data class IntLiteral(
     override val value: Int,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : ASTNode, Literal<Int>
+) : ASTLiteral<Int>
 
 data class FloatLiteral(
     override val value: Float,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : ASTNode, Literal<Float>
+) : ASTLiteral<Float>
 
 data class DoubleLiteral(
     override val value: Double,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : ASTNode, Literal<Double>
+) : ASTLiteral<Double>
 
 data class TrueLiteral(
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : ASTNode, Literal<Boolean> {
+) : ASTLiteral<Boolean> {
     override val value: Boolean = true
 }
 
@@ -46,7 +56,7 @@ data class FalseLiteral(
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : ASTNode, Literal<Boolean> {
+) : ASTLiteral<Boolean> {
     override val value: Boolean = false
 }
 
@@ -57,17 +67,17 @@ data class StringLiteral(
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : ASTNode, Literal<String>
+) : ASTLiteral<String>
 
 data class CharacterLiteral(
     override val value: Char,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : ASTNode, Literal<Char>
+) : ASTLiteral<Char>
 
 @Suppress("SpellCheckingInspection")
-fun <TAST,TValue> buildLiteralFromContext(
+fun <TAST,TValue> buildSingleChildNodeFromExpression(
     context: ParserRuleContext,
     value: TValue,
     builder: (value: TValue, text: String, start: TextLocation, stop: TextLocation) -> TAST

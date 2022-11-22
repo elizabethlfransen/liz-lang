@@ -22,19 +22,19 @@ open class LizLangASTParser : LizLangBaseVisitor<ASTNode>() {
         // parse the integer
         val value = intLiteral.toInt(radix)
 
-        return buildLiteralFromContext(ctx, value, ::IntLiteral)
+        return buildSingleChildNodeFromExpression(ctx, value, ::IntLiteral)
     }
 
     override fun visitFloatLiteral(ctx: FloatLiteralContext): ASTNode {
         val value = ctx.text.replace("_", "")
             .toFloat()
-        return buildLiteralFromContext(ctx, value, ::FloatLiteral)
+        return buildSingleChildNodeFromExpression(ctx, value, ::FloatLiteral)
     }
 
     override fun visitDoubleLiteral(ctx: LizLangParser.DoubleLiteralContext): ASTNode {
         val value = ctx.text.replace("_", "")
             .toDouble()
-        return buildLiteralFromContext(ctx, value, ::DoubleLiteral)
+        return buildSingleChildNodeFromExpression(ctx, value, ::DoubleLiteral)
     }
 
     override fun visitTrueLiteral(ctx: LizLangParser.TrueLiteralContext): ASTNode {
@@ -48,11 +48,23 @@ open class LizLangASTParser : LizLangBaseVisitor<ASTNode>() {
     override fun visitStringLiteral(ctx: LizLangParser.StringLiteralContext): ASTNode {
         val value = ctx.STRING_CHARACTER()
             .joinToString(separator = "", transform = TerminalNode::getText)
-        return buildLiteralFromContext(ctx, value, ::StringLiteral)
+        return buildSingleChildNodeFromExpression(ctx, value, ::StringLiteral)
     }
 
     override fun visitCharLiteral(ctx: LizLangParser.CharLiteralContext): ASTNode {
-        return buildLiteralFromContext(ctx, ctx.text[1], ::CharacterLiteral)
+        return buildSingleChildNodeFromExpression(ctx, ctx.text[1], ::CharacterLiteral)
+    }
+
+    override fun visitLiteral(ctx: LizLangParser.LiteralContext): ASTLiteral<*> {
+        return super.visitLiteral(ctx) as ASTLiteral<*>
+    }
+
+    override fun visitLiteralExpression(ctx: LizLangParser.LiteralExpressionContext): ASTNode {
+        return buildSingleChildNodeFromExpression(
+            ctx,
+            visitLiteral(ctx.literal()),
+            ::LiteralExpression
+        )
     }
 }
 
