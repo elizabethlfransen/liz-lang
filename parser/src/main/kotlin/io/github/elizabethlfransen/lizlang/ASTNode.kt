@@ -9,9 +9,6 @@ sealed interface ASTNode {
     val stop: TextLocation
 }
 
-sealed interface BooleanLiteral : Literal<Boolean>
-sealed interface NumberLiteral<T : Number> : Literal<T>
-
 sealed interface Literal<T> {
     val value: T
 }
@@ -21,27 +18,27 @@ data class IntLiteral(
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : ASTNode, NumberLiteral<Int>
+) : ASTNode, Literal<Int>
 
 data class FloatLiteral(
     override val value: Float,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : ASTNode, NumberLiteral<Float>
+) : ASTNode, Literal<Float>
 
 data class DoubleLiteral(
     override val value: Double,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : ASTNode, NumberLiteral<Double>
+) : ASTNode, Literal<Double>
 
 data class TrueLiteral(
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : ASTNode, BooleanLiteral {
+) : ASTNode, Literal<Boolean> {
     override val value: Boolean = true
 }
 
@@ -49,7 +46,7 @@ data class FalseLiteral(
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : ASTNode, BooleanLiteral {
+) : ASTNode, Literal<Boolean> {
     override val value: Boolean = false
 }
 

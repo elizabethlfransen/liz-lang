@@ -5,15 +5,11 @@ options {
 }
 
 literal
-    : numberLiteral
-    | booleanLiteral
-    ;
-numberLiteral
     : intLiteral
     | doubleLiteral
     | floatLiteral
-    ;
-booleanLiteral: trueLiteral | falseLiteral;
+    | trueLiteral
+    | falseLiteral;
 intLiteral: INTEGER;
 floatLiteral: FLOAT;
 trueLiteral: TRUE;
