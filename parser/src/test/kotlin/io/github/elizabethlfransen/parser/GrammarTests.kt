@@ -84,5 +84,13 @@ class GrammarTests {
             }
     }
 
+    @Test
+    fun `given a char literal when parsing a literal ast then a char literal should be parsed`() {
+        assertThat("'a'")
+            .asAST(LizLangParser::literal)
+            .verify {
+                charLiteral('a')
+            }
+    }
 
 }

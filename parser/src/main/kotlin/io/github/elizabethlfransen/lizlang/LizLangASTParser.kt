@@ -50,5 +50,9 @@ open class LizLangASTParser : LizLangBaseVisitor<ASTNode>() {
             .joinToString(separator = "", transform = TerminalNode::getText)
         return buildLiteralFromContext(ctx, value, ::StringLiteral)
     }
+
+    override fun visitCharLiteral(ctx: LizLangParser.CharLiteralContext): ASTNode {
+        return buildLiteralFromContext(ctx, ctx.text[1], ::CharacterLiteral)
+    }
 }
 

@@ -59,6 +59,13 @@ data class StringLiteral(
     override val stop: TextLocation
 ) : ASTNode, Literal<String>
 
+data class CharacterLiteral(
+    override val value: Char,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : ASTNode, Literal<Char>
+
 @Suppress("SpellCheckingInspection")
 fun <TAST,TValue> buildLiteralFromContext(
     context: ParserRuleContext,
