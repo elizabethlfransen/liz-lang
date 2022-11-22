@@ -6,6 +6,7 @@ import io.github.elizabethlfransen.parser.util.ast.asAST
 import io.github.elizabethlfransen.parser.util.ast.verify
 import io.github.elizabethlfransen.parser.util.mapToDynamicTest
 import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 
 class GrammarTests {
@@ -38,5 +39,23 @@ class GrammarTests {
                     floatLiteral(expected)
                 }
         }
+    }
+
+    @Test
+    fun `given a true literal when parsing a literal ast then a true literal should be parsed`() {
+        assertThat("true")
+            .asAST(LizLangParser::literal)
+            .verify {
+                trueLiteral()
+            }
+    }
+
+    @Test
+    fun `given a false literal when parsing a literal ast then a false literal should be parsed`() {
+        assertThat("false")
+            .asAST(LizLangParser::literal)
+            .verify {
+                falseLiteral()
+            }
     }
 }

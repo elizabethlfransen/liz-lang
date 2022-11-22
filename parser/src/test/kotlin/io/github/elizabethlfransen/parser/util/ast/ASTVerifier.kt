@@ -4,9 +4,7 @@ import assertk.Assert
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import io.github.elizabethlfransen.lizlang.ASTNode
-import io.github.elizabethlfransen.lizlang.FloatLiteral
-import io.github.elizabethlfransen.lizlang.IntLiteral
+import io.github.elizabethlfransen.lizlang.*
 
 class ASTVerifier(private val actual: Assert<ASTNode>) {
 
@@ -20,5 +18,13 @@ class ASTVerifier(private val actual: Assert<ASTNode>) {
         actual.isInstanceOf(FloatLiteral::class)
             .prop(FloatLiteral::value)
             .isEqualTo(expectedValue)
+    }
+
+    fun trueLiteral() {
+        actual.isInstanceOf(TrueLiteral::class)
+    }
+
+    fun falseLiteral() {
+        actual.isInstanceOf(FalseLiteral::class)
     }
 }

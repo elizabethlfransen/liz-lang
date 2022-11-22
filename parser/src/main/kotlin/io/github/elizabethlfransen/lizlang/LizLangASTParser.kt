@@ -29,5 +29,13 @@ open class LizLangASTParser : LizLangBaseVisitor<ASTNode>() {
             .toFloat()
         return buildLiteralFromContext(ctx, value, ::FloatLiteral)
     }
+
+    override fun visitTrueLiteral(ctx: LizLangParser.TrueLiteralContext): ASTNode {
+        return buildASTFromContext(ctx, ::TrueLiteral)
+    }
+
+    override fun visitFalseLiteral(ctx: LizLangParser.FalseLiteralContext): ASTNode {
+        return buildASTFromContext(ctx, ::FalseLiteral)
+    }
 }
 

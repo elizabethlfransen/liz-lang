@@ -9,6 +9,8 @@ sealed interface ASTNode {
     val stop: TextLocation
 }
 
+sealed interface BooleanLiteral : Literal<Boolean>
+
 sealed interface Literal<T> {
     val value: T
 }
@@ -27,6 +29,21 @@ data class FloatLiteral(
     override val stop: TextLocation
 ) : ASTNode, Literal<Float>
 
+data class TrueLiteral(
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : ASTNode, BooleanLiteral {
+    override val value: Boolean = true
+}
+
+data class FalseLiteral(
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : ASTNode, BooleanLiteral {
+    override val value: Boolean = false
+}
 
 @Suppress("SpellCheckingInspection")
 fun <TAST,TValue> buildLiteralFromContext(
