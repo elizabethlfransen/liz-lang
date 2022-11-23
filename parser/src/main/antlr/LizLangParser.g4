@@ -1,8 +1,10 @@
-grammar LizLang;
+parser grammar LizLangParser;
 
 options {
     tokenVocab=LizLangLexer;
 }
+
+program: expression EOF;
 
 expression
     : left=expression MULTIPLICATION right=expression  # multiplicationExpression

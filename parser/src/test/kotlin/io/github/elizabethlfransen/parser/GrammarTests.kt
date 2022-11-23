@@ -101,7 +101,6 @@ class GrammarTests {
 
     @Test
     fun `given a multiple multiplication then the parser should be able to parse it`() {
-
         assertThat("123 * 12 * 3 * 45")
             .asAST(LizLangParser::expression)
             .isExpression {
@@ -113,7 +112,7 @@ class GrammarTests {
                         }
                         int(3)
                     }
-                    int(4)
+                    int(45)
                 }
             }
     }

@@ -1,15 +1,15 @@
 package io.github.elizabethlfransen.lizlang
 
-import io.github.elizabethlfransen.lizlang.parser.LizLangBaseVisitor
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser.FloatLiteralContext
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser.IntLiteralContext
+import io.github.elizabethlfransen.lizlang.parser.LizLangParserBaseVisitor
 import org.antlr.v4.runtime.tree.TerminalNode
 
 /**
  * This class is used to take the result from [LizLangParser] and generate a [ASTNode] which can be used in [ParserVisitor]
  */
-open class LizLangASTParser : LizLangBaseVisitor<ASTNode>() {
+open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
     override fun visitIntLiteral(ctx: IntLiteralContext): ASTNode {
         // remove underscores
         var intLiteral = ctx.text.replace("_", "")
