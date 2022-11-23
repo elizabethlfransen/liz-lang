@@ -33,7 +33,18 @@ fragment HEX_NUMBER_WITH_UNDERSCORE: (HEX_DIGIT (HEX_DIGIT | UNDERSCORE)+ HEX_DI
 fragment HEX_NUMBER_WITHOUT_UNDERSCORE: HEX_DIGIT+;
 fragment HEX_NUMBER: HEX_PREFIX (HEX_NUMBER_WITH_UNDERSCORE | HEX_NUMBER_WITHOUT_UNDERSCORE);
 
+// Operators
+INCREMENT: '++';
+DECREMENT: '--';
+STAR: '*';
+PLUS: '+';
+MINUS: '-';
 
+// seperators
+OPEN_PARENTHESIS: '(';
+CLOSE_PARENTHESIS: ')';
+
+// literals
 TRUE options { caseInsensitive=true; }: 'true';
 FALSE options { caseInsensitive=true; }: 'false';
 FLOAT: (DECIMAL_NUMBER | NUMBER) FLOAT_SUFFIX;
@@ -41,14 +52,11 @@ DOUBLE: DECIMAL_NUMBER;
 INTEGER: NUMBER | HEX_NUMBER;
 START_STRING: '"' -> mode(STRING);
 CHARACTER: '\'' ~'\'' '\'';
-STAR: '*';
-PLUS: '+';
-INCREMENT: '++';
-DECREMENT: '--';
-MINUS: '-';
-OPEN_PARENTHESIS: '(';
-CLOSE_PARENTHESIS: ')';
+
+// misc
 IDENTIFIER: IDENTIFIER_START IDENTIFIER_BODY*;
+
+// whitespace
 WS : [ \r\t\n]+ -> skip;
 
 mode STRING;
