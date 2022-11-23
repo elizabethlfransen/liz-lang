@@ -4,7 +4,10 @@ options {
     tokenVocab=LizLangLexer;
 }
 
-literalExpression: literal;
+expression
+    : left=expression MULTIPLICATION right=expression  # multiplicationExpression
+    | literal # literalExpression;
+
 
 literal
     : intLiteral

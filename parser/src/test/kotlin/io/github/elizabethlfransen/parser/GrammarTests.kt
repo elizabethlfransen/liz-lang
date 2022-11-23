@@ -81,9 +81,42 @@ class GrammarTests {
     @Test
     fun `given a literal expression when parsing then the expression should contain a single non-null literal`() {
         assertThat("123")
-            .asAST(LizLangParser::literalExpression)
-            .isLiteralExpression { child ->
+            .asAST(LizLangParser::expression)
+            .isLiteralExpression {
                 child.isIntLiteral(123)
+            }
+    }
+
+    @Test
+    fun `given a simple multiplication then the parser should be able to parse it`() {
+        assertThat("123 * 12")
+            .asAST(LizLangParser::expression)
+            .isMultiplicationExpression {
+                left.isLiteralExpression {
+                    child.isIntLiteral(123)
+                }
+                right.isLiteralExpression {
+                    child.isIntLiteral(12)
+                }
+            }
+    }
+
+    @Test
+    fun `given a multiple multiplication then the parser should be able to parse it`() {
+
+        assertThat("123 * 12 * 3 * 45")
+            .asAST(LizLangParser::expression)
+            .verify {
+                mult {
+                    mult {
+                        mult {
+                            int(123)
+                            int(12)
+                        }
+                        int(3)
+                    }
+                    int(4)
+                }
             }
     }
 }

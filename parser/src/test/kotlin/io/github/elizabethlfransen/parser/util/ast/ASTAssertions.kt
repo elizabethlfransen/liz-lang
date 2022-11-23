@@ -13,7 +13,7 @@ import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.ParserRuleContext
 
-fun Assert<String>.asAST(parseFunction: (LizLangParser) -> ParserRuleContext) : Assert<ASTNode> {
+fun Assert<String>.asAST(parseFunction: (LizLangParser) -> ParserRuleContext): Assert<ASTNode> {
     val result = transform(appendName("AST")) { actual ->
         val inputStream = CharStreams.fromString(actual)
         val tokens = CommonTokenStream(LizLangLexer(inputStream))
@@ -63,9 +63,25 @@ fun Assert<ASTNode>.isCharLiteral(expectedValue: Char) {
         .isEqualTo(expectedValue)
 }
 
-fun Assert<ASTNode>.isLiteralExpression(childVerifier: (child: Assert<ASTLiteral<*>>) -> Unit = {}) {
-    isInstanceOf(LiteralExpression::class)
-        .prop(LiteralExpression::child)
-        .let(childVerifier)
+data class LiteralExpressionAssertionContext(val child: Assert<ASTLiteral<*>>)
+
+fun Assert<ASTNode>.isLiteralExpression(verify: LiteralExpressionAssertionContext.() -> Unit = {}) {
+    val literalExpression = this.isInstanceOf(LiteralExpression::class)
+    val child = literalExpression.prop(LiteralExpression::child)
+    LiteralExpressionAssertionContext(child)
+        .apply(verify)
 }
+
+data class InfixOperatorAssertionContext(val left: Assert<ASTExpression>, val right: Assert<ASTExpression>)
+
+private inline fun <reified TExpressionType : InfixExpression> Assert<ASTNode>.isInfixOperatorExpression(verify: InfixOperatorAssertionContext.() -> Unit) {
+    val infixExpression = this.isInstanceOf(TExpressionType::class)
+    val left = infixExpression.prop(InfixExpression::left)
+    val right = infixExpression.prop(InfixExpression::right)
+    InfixOperatorAssertionContext(left, right)
+        .apply(verify)
+}
+
+fun Assert<ASTNode>.isMultiplicationExpression(verify: InfixOperatorAssertionContext.() -> Unit = {}) =
+    isInfixOperatorExpression<MultiplicationExpression>(verify)
 

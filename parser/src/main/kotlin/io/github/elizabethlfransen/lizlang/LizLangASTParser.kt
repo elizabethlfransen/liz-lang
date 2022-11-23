@@ -59,12 +59,25 @@ open class LizLangASTParser : LizLangBaseVisitor<ASTNode>() {
         return super.visitLiteral(ctx) as ASTLiteral<*>
     }
 
-    override fun visitLiteralExpression(ctx: LizLangParser.LiteralExpressionContext): ASTNode {
+
+    override fun visitLiteralExpression(ctx: LizLangParser.LiteralExpressionContext): LiteralExpression {
         return buildSingleChildNodeFromExpression(
             ctx,
             visitLiteral(ctx.literal()),
             ::LiteralExpression
         )
+    }
+
+    override fun visitMultiplicationExpression(ctx: LizLangParser.MultiplicationExpressionContext): MultiplicationExpression {
+        return buildASTFromContext(ctx) { text, start, stop ->
+            MultiplicationExpression(
+                ctx.left.accept(this) as ASTExpression,
+                ctx.right.accept(this) as ASTExpression,
+                text,
+                start,
+                stop
+            )
+        }
     }
 }
 

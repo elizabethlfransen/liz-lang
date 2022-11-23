@@ -16,12 +16,25 @@ sealed interface ASTLiteral<T> : ASTNode {
 sealed interface ASTExpression : ASTNode {
 }
 
+sealed interface InfixExpression: ASTExpression {
+    val left: ASTExpression
+    val right: ASTExpression
+}
+
 data class LiteralExpression(
     val child: ASTLiteral<*>,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
 ) : ASTExpression
+
+data class MultiplicationExpression(
+    override val left: ASTExpression,
+    override val right: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : InfixExpression
 
 data class IntLiteral(
     override val value: Int,
