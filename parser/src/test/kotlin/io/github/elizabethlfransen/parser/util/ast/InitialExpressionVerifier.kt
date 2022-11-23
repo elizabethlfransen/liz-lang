@@ -5,7 +5,7 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import io.github.elizabethlfransen.lizlang.*
 
-fun Assert<ASTNode>.verify(verifier: InitialExpressionVerifier.() -> Unit) {
+fun Assert<ASTNode>.isExpression(verifier: InitialExpressionVerifier.() -> Unit) {
     this.isInstanceOf(ASTExpression::class)
         .let(::InitialExpressionVerifier)
         .apply(verifier)

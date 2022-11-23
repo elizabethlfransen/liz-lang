@@ -62,26 +62,3 @@ fun Assert<ASTNode>.isCharLiteral(expectedValue: Char) {
         .prop(CharacterLiteral::value)
         .isEqualTo(expectedValue)
 }
-
-data class LiteralExpressionAssertionContext(val child: Assert<ASTLiteral<*>>)
-
-fun Assert<ASTNode>.isLiteralExpression(verify: LiteralExpressionAssertionContext.() -> Unit = {}) {
-    val literalExpression = this.isInstanceOf(LiteralExpression::class)
-    val child = literalExpression.prop(LiteralExpression::child)
-    LiteralExpressionAssertionContext(child)
-        .apply(verify)
-}
-
-data class InfixOperatorAssertionContext(val left: Assert<ASTExpression>, val right: Assert<ASTExpression>)
-
-private inline fun <reified TExpressionType : InfixExpression> Assert<ASTNode>.isInfixOperatorExpression(verify: InfixOperatorAssertionContext.() -> Unit) {
-    val infixExpression = this.isInstanceOf(TExpressionType::class)
-    val left = infixExpression.prop(InfixExpression::left)
-    val right = infixExpression.prop(InfixExpression::right)
-    InfixOperatorAssertionContext(left, right)
-        .apply(verify)
-}
-
-fun Assert<ASTNode>.isMultiplicationExpression(verify: InfixOperatorAssertionContext.() -> Unit = {}) =
-    isInfixOperatorExpression<MultiplicationExpression>(verify)
-
