@@ -7,6 +7,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.prop
 import assertk.assertions.support.appendName
 import io.github.elizabethlfransen.lizlang.*
+import io.github.elizabethlfransen.lizlang.ast.*
 import io.github.elizabethlfransen.lizlang.parser.LizLangLexer
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser
 import org.antlr.v4.runtime.CharStreams

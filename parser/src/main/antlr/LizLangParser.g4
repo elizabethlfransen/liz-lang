@@ -8,6 +8,8 @@ program: expression EOF;
 
 expression
     : OPEN_PARENTHESIS child=expression CLOSE_PARENTHESIS # ParenthesisExp
+    | <assoc=right> MINUS child=expression # UnaryMinusExp
+    | <assoc=right> PLUS child=expression # UnaryPlusExp
     | left=expression STAR right=expression  # MultiplyExp
     | left=expression PLUS right=expression # AddExp
     | literal # LiteralExp;

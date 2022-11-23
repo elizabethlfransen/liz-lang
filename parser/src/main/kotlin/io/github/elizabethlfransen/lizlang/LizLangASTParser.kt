@@ -1,5 +1,6 @@
 package io.github.elizabethlfransen.lizlang
 
+import io.github.elizabethlfransen.lizlang.ast.*
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser.FloatLiteralContext
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser.IntLiteralContext
@@ -91,6 +92,22 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
             ctx,
             ctx.child.accept(this) as ASTExpression,
             ::ParenthesisExpression
+        )
+    }
+
+    override fun visitUnaryMinusExp(ctx: LizLangParser.UnaryMinusExpContext): ASTNode {
+        return buildASTFromContext(
+            ctx,
+            ctx.child.accept(this) as ASTExpression,
+            ::UnaryMinusExpression
+        )
+    }
+
+    override fun visitUnaryPlusExp(ctx: LizLangParser.UnaryPlusExpContext): ASTNode {
+        return buildASTFromContext(
+            ctx,
+            ctx.child.accept(this) as ASTExpression,
+            ::UnaryPlusExpression
         )
     }
 }

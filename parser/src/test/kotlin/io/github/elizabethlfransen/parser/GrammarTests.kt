@@ -3,6 +3,7 @@ package io.github.elizabethlfransen.parser
 import assertk.assertThat
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser
 import io.github.elizabethlfransen.parser.util.ast.*
+import io.github.elizabethlfransen.parser.util.ast.exp.isExpression
 import io.github.elizabethlfransen.parser.util.mapToDynamicTest
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
@@ -159,6 +160,44 @@ class GrammarTests {
                     add {
                         int(123)
                         int(1)
+                    }
+                }
+            }
+    }
+
+    @Test
+    fun `parser should accept unary minus`() {
+        assertThat("- 1")
+            .asAST(LizLangParser::expression)
+            .isExpression {
+                unaryMinus {
+                    int(1)
+                }
+            }
+    }
+
+    @Test
+    fun `parser should accept unary plus`() {
+        assertThat("+ 1")
+            .asAST(LizLangParser::expression)
+            .isExpression {
+                unaryPlus {
+                    int(1)
+                }
+            }
+    }
+
+    @Test
+    fun `unary operators should be right associative`() {
+        assertThat("+ 1 + - 2")
+            .asAST(LizLangParser::expression)
+            .isExpression {
+                add {
+                    unaryPlus {
+                        int(1)
+                    }
+                    unaryMinus {
+                        int(2)
                     }
                 }
             }
