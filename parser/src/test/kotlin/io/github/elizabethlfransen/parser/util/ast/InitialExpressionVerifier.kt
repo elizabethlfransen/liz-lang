@@ -4,6 +4,7 @@ import assertk.Assert
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import io.github.elizabethlfransen.lizlang.*
+import kotlin.reflect.KClass
 
 fun Assert<ASTNode>.isExpression(verifier: InitialExpressionVerifier.() -> Unit) {
     this.isInstanceOf(ASTExpression::class)
@@ -14,14 +15,17 @@ fun Assert<ASTNode>.isExpression(verifier: InitialExpressionVerifier.() -> Unit)
 
 abstract class ExpressionVerifier {
 
-    fun mult(verifier: InfixExpressionVerifier.() -> Unit) {
+    private fun infix(expressionType: KClass<out InfixExpression>, verifier: InfixExpressionVerifier.() -> Unit) {
         runAssertion { actual ->
-            actual.isInstanceOf(MultiplicationExpression::class)
+            actual.isInstanceOf(expressionType)
                 .let(::InfixExpressionVerifier)
                 .apply(verifier)
                 .verifyFinished()
         }
     }
+
+    fun mult(verifier: InfixExpressionVerifier.() -> Unit) = infix(MultiplicationExpression::class, verifier)
+    fun add(verifier: InfixExpressionVerifier.() -> Unit) = infix(AdditionExpression::class, verifier)
 
     fun int(value: Int) {
         runAssertion { actual ->
@@ -41,6 +45,7 @@ class InfixExpressionVerifier(private val actual: Assert<InfixExpression>) : Exp
         RIGHT,
         FINISHED,
     }
+
     private val nextState = mapOf(
         State.LEFT to State.RIGHT,
         State.RIGHT to State.FINISHED
@@ -48,7 +53,7 @@ class InfixExpressionVerifier(private val actual: Assert<InfixExpression>) : Exp
     private var state = State.LEFT
 
     override fun runAssertion(assertion: (actual: Assert<ASTExpression>) -> Unit) {
-        val target = when(state) {
+        val target = when (state) {
             State.LEFT -> actual.prop(InfixExpression::left)
             State.RIGHT -> actual.prop(InfixExpression::right)
             State.FINISHED -> throw IllegalStateException("Attempted to execute assertion but all nodes were consumed")
@@ -59,7 +64,7 @@ class InfixExpressionVerifier(private val actual: Assert<InfixExpression>) : Exp
 
 
     override fun verifyFinished() {
-        if(state != State.FINISHED) throw IllegalStateException("Attempted to verify without exhausting all nodes")
+        if (state != State.FINISHED) throw IllegalStateException("Attempted to verify without exhausting all nodes")
     }
 }
 
@@ -67,13 +72,13 @@ class InitialExpressionVerifier(private val actual: Assert<ASTExpression>) : Exp
     private var finished = false
 
     override fun runAssertion(assertion: (actual: Assert<ASTExpression>) -> Unit) {
-        if(finished) throw IllegalStateException("Attempted to have multiple verifications at root level")
+        if (finished) throw IllegalStateException("Attempted to have multiple verifications at root level")
         assertion(actual)
         finished = true
     }
 
     override fun verifyFinished() {
-        if(!finished)
+        if (!finished)
             throw IllegalStateException("Attempted to verify without a root expression")
     }
 }

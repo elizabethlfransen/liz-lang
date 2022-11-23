@@ -36,6 +36,16 @@ data class MultiplicationExpression(
     override val stop: TextLocation
 ) : InfixExpression
 
+data class AdditionExpression(
+    override val left: ASTExpression,
+    override val right: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : InfixExpression
+
+
+
 data class IntLiteral(
     override val value: Int,
     override val text: String,
@@ -89,13 +99,22 @@ data class CharacterLiteral(
     override val stop: TextLocation
 ) : ASTLiteral<Char>
 
-@Suppress("SpellCheckingInspection")
-fun <TAST,TValue> buildSingleChildNodeFromExpression(
+
+fun <TAST,TValue> buildASTFromContext(
     context: ParserRuleContext,
     value: TValue,
     builder: (value: TValue, text: String, start: TextLocation, stop: TextLocation) -> TAST
 ) = buildASTFromContext(context) { text, start, stop ->
     builder(value, text, start, stop)
+}
+
+fun <TAST,TLeft,TRight> buildASTFromContext(
+    context: ParserRuleContext,
+    left: TLeft,
+    right: TRight,
+    builder: (left: TLeft, right: TRight, text: String, start: TextLocation, stop: TextLocation) -> TAST
+) = buildASTFromContext(context) { text, start, stop ->
+    builder(left, right, text, start, stop)
 }
 
 fun <T> buildASTFromContext(

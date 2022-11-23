@@ -116,4 +116,37 @@ class GrammarTests {
                 }
             }
     }
+
+    @Test
+    fun `parser should be able to parse an addition expression`() {
+        assertThat("123 + 456 + 789")
+            .asAST(LizLangParser::expression)
+            .isExpression {
+                add {
+                    add {
+                        int(123)
+                        int(456)
+                    }
+                    int(789)
+                }
+            }
+    }
+
+    @Test
+    fun `parser should priorities multiplication over addition`() {
+        assertThat("123 + 456 * 789 + 123")
+            .asAST(LizLangParser::expression)
+            .isExpression {
+                add {
+                    add {
+                        int(123)
+                        mult {
+                            int(456)
+                            int(789)
+                        }
+                    }
+                    int(123)
+                }
+            }
+    }
 }

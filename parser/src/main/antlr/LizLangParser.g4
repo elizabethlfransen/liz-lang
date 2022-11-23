@@ -7,8 +7,9 @@ options {
 program: expression EOF;
 
 expression
-    : left=expression MULTIPLICATION right=expression  # multiplicationExpression
-    | literal # literalExpression;
+    : left=expression STAR right=expression  # MultiplyExp
+    | left=expression PLUS right=expression # AddExp
+    | literal # LiteralExp;
 
 
 literal
