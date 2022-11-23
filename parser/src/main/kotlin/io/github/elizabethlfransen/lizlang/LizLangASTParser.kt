@@ -86,5 +86,12 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
+    override fun visitParenthesisExp(ctx: LizLangParser.ParenthesisExpContext): ParenthesisExpression {
+        return buildASTFromContext(
+            ctx,
+            ctx.child.accept(this) as ASTExpression,
+            ::ParenthesisExpression
+        )
+    }
 }
 

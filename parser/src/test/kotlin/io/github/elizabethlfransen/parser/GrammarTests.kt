@@ -149,4 +149,18 @@ class GrammarTests {
                 }
             }
     }
+
+    @Test
+    fun `parser should accept parenthesis`() {
+        assertThat("(123 + 1)")
+            .asAST(LizLangParser::expression)
+            .isExpression {
+                paren {
+                    add {
+                        int(123)
+                        int(1)
+                    }
+                }
+            }
+    }
 }

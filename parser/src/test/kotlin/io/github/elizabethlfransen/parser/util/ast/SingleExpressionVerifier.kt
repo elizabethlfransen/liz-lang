@@ -6,26 +6,36 @@ import assertk.assertions.prop
 import io.github.elizabethlfransen.lizlang.*
 import kotlin.reflect.KClass
 
-fun Assert<ASTNode>.isExpression(verifier: InitialExpressionVerifier.() -> Unit) {
+fun Assert<ASTNode>.isExpression(verifier: SingleExpressionVerifier.() -> Unit) {
     this.isInstanceOf(ASTExpression::class)
-        .let(::InitialExpressionVerifier)
+        .let { root -> SingleExpressionVerifier("Root", root) }
         .apply(verifier)
         .verifyFinished()
 }
 
 abstract class ExpressionVerifier {
 
-    private fun infix(expressionType: KClass<out InfixExpression>, verifier: InfixExpressionVerifier.() -> Unit) {
+    private fun infix(name: String, expressionType: KClass<out InfixExpression>, verifier: InfixExpressionVerifier.() -> Unit) {
         runAssertion { actual ->
             actual.isInstanceOf(expressionType)
-                .let(::InfixExpressionVerifier)
+                .let { child -> InfixExpressionVerifier(name, child) }
                 .apply(verifier)
                 .verifyFinished()
         }
     }
 
-    fun mult(verifier: InfixExpressionVerifier.() -> Unit) = infix(MultiplicationExpression::class, verifier)
-    fun add(verifier: InfixExpressionVerifier.() -> Unit) = infix(AdditionExpression::class, verifier)
+    fun mult(verifier: InfixExpressionVerifier.() -> Unit) = infix("Multiplication", MultiplicationExpression::class, verifier)
+    fun add(verifier: InfixExpressionVerifier.() -> Unit) = infix("Addition", AdditionExpression::class, verifier)
+
+    fun paren(verifier: ExpressionVerifier.() -> Unit) {
+        runAssertion {actual ->
+            actual.isInstanceOf(ParenthesisExpression::class)
+                .prop(ParenthesisExpression::child)
+                .let { child -> SingleExpressionVerifier("Parenthesis", child) }
+                .apply(verifier)
+                .verifyFinished()
+        }
+    }
 
     fun int(value: Int) {
         runAssertion { actual ->
@@ -39,7 +49,7 @@ abstract class ExpressionVerifier {
     abstract fun verifyFinished()
 }
 
-class InfixExpressionVerifier(private val actual: Assert<InfixExpression>) : ExpressionVerifier() {
+class InfixExpressionVerifier(private val name: String, private val actual: Assert<InfixExpression>) : ExpressionVerifier() {
     private enum class State {
         LEFT,
         RIGHT,
@@ -64,21 +74,22 @@ class InfixExpressionVerifier(private val actual: Assert<InfixExpression>) : Exp
 
 
     override fun verifyFinished() {
-        if (state != State.FINISHED) throw IllegalStateException("Attempted to verify without exhausting all nodes")
+        if (state == State.LEFT) throw IllegalStateException("$name expression expects two child expression but had 0")
+        if (state == State.RIGHT) throw IllegalStateException("$name expression expects two child expression but had 1")
     }
 }
 
-class InitialExpressionVerifier(private val actual: Assert<ASTExpression>) : ExpressionVerifier() {
+class SingleExpressionVerifier(val name: String, private val actual: Assert<ASTExpression>) : ExpressionVerifier() {
     private var finished = false
 
     override fun runAssertion(assertion: (actual: Assert<ASTExpression>) -> Unit) {
-        if (finished) throw IllegalStateException("Attempted to have multiple verifications at root level")
+        if (finished) throw IllegalStateException("$name expression expects one child expression but had multiple")
         assertion(actual)
         finished = true
     }
 
     override fun verifyFinished() {
         if (!finished)
-            throw IllegalStateException("Attempted to verify without a root expression")
+            throw IllegalStateException("$name expression expects one child expression but had multiple")
     }
 }

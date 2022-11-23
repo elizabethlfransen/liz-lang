@@ -28,6 +28,13 @@ data class LiteralExpression(
     override val stop: TextLocation
 ) : ASTExpression
 
+data class ParenthesisExpression(
+    val child: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : ASTExpression
+
 data class MultiplicationExpression(
     override val left: ASTExpression,
     override val right: ASTExpression,

@@ -43,6 +43,8 @@ START_STRING: '"' -> mode(STRING);
 CHARACTER: '\'' ~'\'' '\'';
 STAR: '*';
 PLUS: '+';
+OPEN_PARENTHESIS: '(';
+CLOSE_PARENTHESIS: ')';
 IDENTIFIER: IDENTIFIER_START IDENTIFIER_BODY*;
 WS : [ \r\t\n]+ -> skip;
 

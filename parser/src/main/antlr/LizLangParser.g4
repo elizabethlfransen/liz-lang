@@ -7,7 +7,8 @@ options {
 program: expression EOF;
 
 expression
-    : left=expression STAR right=expression  # MultiplyExp
+    : OPEN_PARENTHESIS child=expression CLOSE_PARENTHESIS # ParenthesisExp
+    | left=expression STAR right=expression  # MultiplyExp
     | left=expression PLUS right=expression # AddExp
     | literal # LiteralExp;
 
