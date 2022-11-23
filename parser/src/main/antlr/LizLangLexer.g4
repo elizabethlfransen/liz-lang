@@ -43,6 +43,8 @@ START_STRING: '"' -> mode(STRING);
 CHARACTER: '\'' ~'\'' '\'';
 STAR: '*';
 PLUS: '+';
+INCREMENT: '++';
+DECREMENT: '--';
 MINUS: '-';
 OPEN_PARENTHESIS: '(';
 CLOSE_PARENTHESIS: ')';

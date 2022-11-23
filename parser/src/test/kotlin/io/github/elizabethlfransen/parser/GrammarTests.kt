@@ -3,7 +3,6 @@ package io.github.elizabethlfransen.parser
 import assertk.assertThat
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser
 import io.github.elizabethlfransen.parser.util.ast.*
-import io.github.elizabethlfransen.parser.util.ast.exp.isExpression
 import io.github.elizabethlfransen.parser.util.mapToDynamicTest
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
@@ -198,6 +197,22 @@ class GrammarTests {
                     }
                     unaryMinus {
                         int(2)
+                    }
+                }
+            }
+    }
+
+    @Test
+    fun `parser should accept post increment and decrement`() {
+        assertThat("123 ++ + 123--")
+            .asAST(LizLangParser::expression)
+            .isExpression {
+                add {
+                    postIncrement {
+                        int(123)
+                    }
+                    postDecrement {
+                        int(123)
                     }
                 }
             }

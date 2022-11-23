@@ -7,13 +7,7 @@ import io.github.elizabethlfransen.lizlang.ast.*
 import io.github.elizabethlfransen.parser.util.ast.isIntLiteral
 import kotlin.reflect.KClass
 
-fun Assert<ASTNode>.isExpression(verifier: UnaryExpressionVerifier.() -> Unit) {
-    this.isInstanceOf(ASTExpression::class)
-        .let { root -> UnaryExpressionVerifier("Root", root) }
-        .apply(verifier)
-        .verifyFinished()
-}
-
+@Suppress("SimpleRedundantLet")
 abstract class ExpressionVerifier {
 
     private fun infix(
@@ -56,6 +50,13 @@ abstract class ExpressionVerifier {
 
     fun unaryPlus(verifier: UnaryExpressionVerifier.() -> Unit) =
         unary("Unary Plus", UnaryPlusExpression::class, verifier)
+
+    fun postIncrement(verifier: UnaryExpressionVerifier.() -> Unit) =
+        unary("Post Increment", PostIncrementExpression::class, verifier)
+
+
+    fun postDecrement(verifier: UnaryExpressionVerifier.() -> Unit) =
+        unary("Post Decrement", PostDecrementExpression::class, verifier)
 
 
     fun int(value: Int) {

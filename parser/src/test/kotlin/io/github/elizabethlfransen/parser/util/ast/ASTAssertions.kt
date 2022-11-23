@@ -10,6 +10,7 @@ import io.github.elizabethlfransen.lizlang.*
 import io.github.elizabethlfransen.lizlang.ast.*
 import io.github.elizabethlfransen.lizlang.parser.LizLangLexer
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser
+import io.github.elizabethlfransen.parser.util.ast.exp.UnaryExpressionVerifier
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.ParserRuleContext
@@ -62,4 +63,12 @@ fun Assert<ASTNode>.isCharLiteral(expectedValue: Char) {
     isInstanceOf(CharacterLiteral::class)
         .prop(CharacterLiteral::value)
         .isEqualTo(expectedValue)
+}
+
+
+fun Assert<ASTNode>.isExpression(verifier: UnaryExpressionVerifier.() -> Unit) {
+    this.isInstanceOf(ASTExpression::class)
+        .let { root -> UnaryExpressionVerifier("Root", root) }
+        .apply(verifier)
+        .verifyFinished()
 }

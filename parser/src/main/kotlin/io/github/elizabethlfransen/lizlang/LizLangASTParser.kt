@@ -110,5 +110,22 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
             ::UnaryPlusExpression
         )
     }
+
+    override fun visitPostDecrementExp(ctx: LizLangParser.PostDecrementExpContext): ASTNode {
+        return buildASTFromContext(
+            ctx,
+            ctx.child.accept(this) as ASTExpression,
+            ::PostDecrementExpression
+        )
+    }
+
+
+    override fun visitPostIncrementExp(ctx: LizLangParser.PostIncrementExpContext): ASTNode {
+        return buildASTFromContext(
+            ctx,
+            ctx.child.accept(this) as ASTExpression,
+            ::PostIncrementExpression
+        )
+    }
 }
 

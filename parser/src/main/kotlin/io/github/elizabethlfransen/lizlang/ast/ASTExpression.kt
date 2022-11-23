@@ -57,3 +57,17 @@ data class UnaryPlusExpression(
     override val start: TextLocation,
     override val stop: TextLocation
 ) : UnaryExpression
+
+data class PostIncrementExpression(
+    override val child: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : UnaryExpression
+
+data class PostDecrementExpression(
+    override val child: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : UnaryExpression
