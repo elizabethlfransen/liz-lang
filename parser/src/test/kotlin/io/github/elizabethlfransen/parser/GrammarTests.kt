@@ -233,4 +233,15 @@ class GrammarTests {
                 }
             }
     }
+
+    @Test
+    fun `parser should accept not`() {
+        assertThat("!123")
+            .asAST(LizLangParser::expression)
+            .isExpression {
+                not {
+                    int(123)
+                }
+            }
+    }
 }

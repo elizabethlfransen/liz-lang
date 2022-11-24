@@ -85,3 +85,17 @@ data class PreDecrementExpression(
     override val start: TextLocation,
     override val stop: TextLocation
 ) : UnaryExpression
+
+data class NotExpression(
+    override val child: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : UnaryExpression
+
+data class BitwiseComplementExpression(
+    override val child: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : UnaryExpression

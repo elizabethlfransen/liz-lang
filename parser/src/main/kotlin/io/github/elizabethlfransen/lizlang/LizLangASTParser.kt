@@ -143,5 +143,13 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
             ::PreIncrementExpression
         )
     }
+
+    override fun visitLogicalNotExp(ctx: LizLangParser.LogicalNotExpContext): ASTNode {
+        return buildASTFromContext(
+            ctx,
+            ctx.child.accept(this) as ASTExpression,
+            ::NotExpression
+        )
+    }
 }
 
