@@ -95,7 +95,7 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitUnaryMinusExp(ctx: LizLangParser.UnaryMinusExpContext): ASTNode {
+    override fun visitUnaryMinusExp(ctx: LizLangParser.UnaryMinusExpContext): UnaryMinusExpression {
         return buildASTFromContext(
             ctx,
             ctx.child.accept(this) as ASTExpression,
@@ -103,7 +103,7 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitUnaryPlusExp(ctx: LizLangParser.UnaryPlusExpContext): ASTNode {
+    override fun visitUnaryPlusExp(ctx: LizLangParser.UnaryPlusExpContext): UnaryPlusExpression {
         return buildASTFromContext(
             ctx,
             ctx.child.accept(this) as ASTExpression,
@@ -111,7 +111,7 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitPostDecrementExp(ctx: LizLangParser.PostDecrementExpContext): ASTNode {
+    override fun visitPostDecrementExp(ctx: LizLangParser.PostDecrementExpContext): PostDecrementExpression {
         return buildASTFromContext(
             ctx,
             ctx.child.accept(this) as ASTExpression,
@@ -120,11 +120,27 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
     }
 
 
-    override fun visitPostIncrementExp(ctx: LizLangParser.PostIncrementExpContext): ASTNode {
+    override fun visitPostIncrementExp(ctx: LizLangParser.PostIncrementExpContext): PostIncrementExpression {
         return buildASTFromContext(
             ctx,
             ctx.child.accept(this) as ASTExpression,
             ::PostIncrementExpression
+        )
+    }
+
+    override fun visitPreDecrementExp(ctx: LizLangParser.PreDecrementExpContext): PreDecrementExpression {
+        return buildASTFromContext(
+            ctx,
+            ctx.child.accept(this) as ASTExpression,
+            ::PreDecrementExpression
+        )
+    }
+
+    override fun visitPreIncrementExp(ctx: LizLangParser.PreIncrementExpContext) : PreIncrementExpression {
+        return buildASTFromContext(
+            ctx,
+            ctx.child.accept(this) as ASTExpression,
+            ::PreIncrementExpression
         )
     }
 }

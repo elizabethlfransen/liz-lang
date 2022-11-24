@@ -71,3 +71,17 @@ data class PostDecrementExpression(
     override val start: TextLocation,
     override val stop: TextLocation
 ) : UnaryExpression
+
+data class PreIncrementExpression(
+    override val child: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : UnaryExpression
+
+data class PreDecrementExpression(
+    override val child: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : UnaryExpression

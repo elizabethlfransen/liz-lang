@@ -54,9 +54,14 @@ abstract class ExpressionVerifier {
     fun postIncrement(verifier: UnaryExpressionVerifier.() -> Unit) =
         unary("Post Increment", PostIncrementExpression::class, verifier)
 
-
     fun postDecrement(verifier: UnaryExpressionVerifier.() -> Unit) =
         unary("Post Decrement", PostDecrementExpression::class, verifier)
+
+    fun preIncrement(verifier: UnaryExpressionVerifier.() -> Unit) =
+        unary("Pre Increment", PreIncrementExpression::class, verifier)
+
+    fun preDecrement(verifier: UnaryExpressionVerifier.() -> Unit) =
+        unary("Pre Decrement", PreDecrementExpression::class, verifier)
 
 
     fun int(value: Int) {
