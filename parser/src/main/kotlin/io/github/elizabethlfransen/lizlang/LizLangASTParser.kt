@@ -2,8 +2,7 @@ package io.github.elizabethlfransen.lizlang
 
 import io.github.elizabethlfransen.lizlang.ast.*
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser
-import io.github.elizabethlfransen.lizlang.parser.LizLangParser.FloatLiteralContext
-import io.github.elizabethlfransen.lizlang.parser.LizLangParser.IntLiteralContext
+import io.github.elizabethlfransen.lizlang.parser.LizLangParser.*
 import io.github.elizabethlfransen.lizlang.parser.LizLangParserBaseVisitor
 import org.antlr.v4.runtime.tree.TerminalNode
 
@@ -32,36 +31,36 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         return buildASTFromContext(ctx, value, ::FloatLiteral)
     }
 
-    override fun visitDoubleLiteral(ctx: LizLangParser.DoubleLiteralContext): ASTNode {
+    override fun visitDoubleLiteral(ctx: DoubleLiteralContext): ASTNode {
         val value = ctx.text.replace("_", "")
             .toDouble()
         return buildASTFromContext(ctx, value, ::DoubleLiteral)
     }
 
-    override fun visitTrueLiteral(ctx: LizLangParser.TrueLiteralContext): ASTNode {
+    override fun visitTrueLiteral(ctx: TrueLiteralContext): ASTNode {
         return buildASTFromContext(ctx, ::TrueLiteral)
     }
 
-    override fun visitFalseLiteral(ctx: LizLangParser.FalseLiteralContext): ASTNode {
+    override fun visitFalseLiteral(ctx: FalseLiteralContext): ASTNode {
         return buildASTFromContext(ctx, ::FalseLiteral)
     }
 
-    override fun visitStringLiteral(ctx: LizLangParser.StringLiteralContext): ASTNode {
+    override fun visitStringLiteral(ctx: StringLiteralContext): ASTNode {
         val value = ctx.STRING_CHARACTER()
             .joinToString(separator = "", transform = TerminalNode::getText)
         return buildASTFromContext(ctx, value, ::StringLiteral)
     }
 
-    override fun visitCharLiteral(ctx: LizLangParser.CharLiteralContext): ASTNode {
+    override fun visitCharLiteral(ctx: CharLiteralContext): ASTNode {
         return buildASTFromContext(ctx, ctx.text[1], ::CharacterLiteral)
     }
 
-    override fun visitLiteral(ctx: LizLangParser.LiteralContext): ASTLiteral<*> {
+    override fun visitLiteral(ctx: LiteralContext): ASTLiteral<*> {
         return super.visitLiteral(ctx) as ASTLiteral<*>
     }
 
 
-    override fun visitLiteralExp(ctx: LizLangParser.LiteralExpContext): LiteralExpression {
+    override fun visitLiteralExp(ctx: LiteralExpContext): LiteralExpression {
         return buildASTFromContext(
             ctx,
             visitLiteral(ctx.literal()),
@@ -69,7 +68,7 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitMultiplyExp(ctx: LizLangParser.MultiplyExpContext): MultiplicationExpression {
+    override fun visitMultiplyExp(ctx: MultiplyExpContext): MultiplicationExpression {
         return buildASTFromContext(
             ctx,
             ctx.left.accept(this) as ASTExpression,
@@ -78,7 +77,7 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitAddExp(ctx: LizLangParser.AddExpContext): AdditionExpression {
+    override fun visitAddExp(ctx: AddExpContext): AdditionExpression {
         return buildASTFromContext(
             ctx,
             ctx.left.accept(this) as ASTExpression,
@@ -87,7 +86,7 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitParenthesisExp(ctx: LizLangParser.ParenthesisExpContext): ParenthesisExpression {
+    override fun visitParenthesisExp(ctx: ParenthesisExpContext): ParenthesisExpression {
         return buildASTFromContext(
             ctx,
             ctx.child.accept(this) as ASTExpression,
@@ -95,7 +94,7 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitUnaryMinusExp(ctx: LizLangParser.UnaryMinusExpContext): UnaryMinusExpression {
+    override fun visitUnaryMinusExp(ctx: UnaryMinusExpContext): UnaryMinusExpression {
         return buildASTFromContext(
             ctx,
             ctx.child.accept(this) as ASTExpression,
@@ -103,7 +102,7 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitUnaryPlusExp(ctx: LizLangParser.UnaryPlusExpContext): UnaryPlusExpression {
+    override fun visitUnaryPlusExp(ctx: UnaryPlusExpContext): UnaryPlusExpression {
         return buildASTFromContext(
             ctx,
             ctx.child.accept(this) as ASTExpression,
@@ -111,7 +110,7 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitPostDecrementExp(ctx: LizLangParser.PostDecrementExpContext): PostDecrementExpression {
+    override fun visitPostDecrementExp(ctx: PostDecrementExpContext): PostDecrementExpression {
         return buildASTFromContext(
             ctx,
             ctx.child.accept(this) as ASTExpression,
@@ -120,7 +119,7 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
     }
 
 
-    override fun visitPostIncrementExp(ctx: LizLangParser.PostIncrementExpContext): PostIncrementExpression {
+    override fun visitPostIncrementExp(ctx: PostIncrementExpContext): PostIncrementExpression {
         return buildASTFromContext(
             ctx,
             ctx.child.accept(this) as ASTExpression,
@@ -128,7 +127,7 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitPreDecrementExp(ctx: LizLangParser.PreDecrementExpContext): PreDecrementExpression {
+    override fun visitPreDecrementExp(ctx: PreDecrementExpContext): PreDecrementExpression {
         return buildASTFromContext(
             ctx,
             ctx.child.accept(this) as ASTExpression,
@@ -136,7 +135,7 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitPreIncrementExp(ctx: LizLangParser.PreIncrementExpContext) : PreIncrementExpression {
+    override fun visitPreIncrementExp(ctx: PreIncrementExpContext) : PreIncrementExpression {
         return buildASTFromContext(
             ctx,
             ctx.child.accept(this) as ASTExpression,
@@ -144,11 +143,19 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitLogicalNotExp(ctx: LizLangParser.LogicalNotExpContext): ASTNode {
+    override fun visitLogicalNotExp(ctx: LogicalNotExpContext): ASTNode {
         return buildASTFromContext(
             ctx,
             ctx.child.accept(this) as ASTExpression,
             ::NotExpression
+        )
+    }
+
+    override fun visitBitwiseComplementExp(ctx: BitwiseComplementExpContext): BitwiseComplementExpression {
+        return buildASTFromContext(
+            ctx,
+            ctx.child.accept(this) as ASTExpression,
+            ::BitwiseComplementExpression
         )
     }
 }

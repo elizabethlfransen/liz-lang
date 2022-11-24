@@ -244,4 +244,15 @@ class GrammarTests {
                 }
             }
     }
+
+    @Test
+    fun `parser should accept bitwise complement`() {
+        assertThat("~123")
+            .asAST(LizLangParser::expression)
+            .isExpression {
+                bnot {
+                    int(123)
+                }
+            }
+    }
 }
