@@ -217,4 +217,42 @@ class GrammarTests {
                 }
             }
     }
+
+    @Test
+    fun `parser should accept pre increment and decrement`() {
+        assertThat("++ 123 + -- 123")
+            .asAST(LizLangParser::expression)
+            .isExpression {
+                add {
+                    preIncrement {
+                        int(123)
+                    }
+                    preDecrement {
+                        int(123)
+                    }
+                }
+            }
+    }
+
+    @Test
+    fun `parser should accept not`() {
+        assertThat("!123")
+            .asAST(LizLangParser::expression)
+            .isExpression {
+                not {
+                    int(123)
+                }
+            }
+    }
+
+    @Test
+    fun `parser should accept bitwise complement`() {
+        assertThat("~123")
+            .asAST(LizLangParser::expression)
+            .isExpression {
+                bnot {
+                    int(123)
+                }
+            }
+    }
 }

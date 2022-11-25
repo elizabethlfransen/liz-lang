@@ -54,10 +54,21 @@ abstract class ExpressionVerifier {
     fun postIncrement(verifier: UnaryExpressionVerifier.() -> Unit) =
         unary("Post Increment", PostIncrementExpression::class, verifier)
 
-
     fun postDecrement(verifier: UnaryExpressionVerifier.() -> Unit) =
         unary("Post Decrement", PostDecrementExpression::class, verifier)
 
+    fun preIncrement(verifier: UnaryExpressionVerifier.() -> Unit) =
+        unary("Pre Increment", PreIncrementExpression::class, verifier)
+
+    fun preDecrement(verifier: UnaryExpressionVerifier.() -> Unit) =
+        unary("Pre Decrement", PreDecrementExpression::class, verifier)
+    fun not(verifier: UnaryExpressionVerifier.() -> Unit) =
+        unary("Not", NotExpression::class, verifier)
+
+    fun bnot(verifier: UnaryExpressionVerifier.() -> Unit) =
+        unary("Bitwise Complement", BitwiseComplementExpression::class, verifier)
+
+    fun cast(verifier: UnaryExpressionVerifier.() -> Unit) =
 
     fun int(value: Int) {
         runAssertion { actual ->

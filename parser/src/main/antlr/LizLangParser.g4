@@ -10,8 +10,12 @@ expression
     : OPEN_PARENTHESIS child=expression CLOSE_PARENTHESIS # ParenthesisExp
     | child=expression INCREMENT # PostIncrementExp
     | child=expression DECREMENT # PostDecrementExp
-    | <assoc=right> MINUS child=expression # UnaryMinusExp
-    | <assoc=right> PLUS child=expression # UnaryPlusExp
+    | INCREMENT child=expression # PreIncrementExp
+    | DECREMENT child=expression # PreDecrementExp
+    | MINUS child=expression # UnaryMinusExp
+    | PLUS child=expression # UnaryPlusExp
+    | EXCLAMATION_MARK child=expression # LogicalNotExp
+    | GRAVE child=expression # BitwiseComplementExp
     | left=expression STAR right=expression  # MultiplyExp
     | left=expression PLUS right=expression # AddExp
     | literal # LiteralExp;

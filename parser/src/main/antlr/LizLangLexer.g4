@@ -39,6 +39,8 @@ DECREMENT: '--';
 STAR: '*';
 PLUS: '+';
 MINUS: '-';
+EXCLAMATION_MARK: '!';
+GRAVE: '~';
 
 // seperators
 OPEN_PARENTHESIS: '(';
