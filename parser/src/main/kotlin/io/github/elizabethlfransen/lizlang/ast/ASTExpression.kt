@@ -99,3 +99,10 @@ data class BitwiseComplementExpression(
     override val start: TextLocation,
     override val stop: TextLocation
 ) : UnaryExpression
+
+data class CastExpression(
+    override val child: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+): UnaryExpression

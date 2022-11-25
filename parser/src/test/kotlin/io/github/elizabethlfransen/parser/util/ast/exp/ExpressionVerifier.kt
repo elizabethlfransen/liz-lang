@@ -68,6 +68,8 @@ abstract class ExpressionVerifier {
     fun bnot(verifier: UnaryExpressionVerifier.() -> Unit) =
         unary("Bitwise Complement", BitwiseComplementExpression::class, verifier)
 
+    fun cast(verifier: UnaryExpressionVerifier.() -> Unit) =
+
     fun int(value: Int) {
         runAssertion { actual ->
             actual.isInstanceOf(LiteralExpression::class)
