@@ -5,7 +5,7 @@ import io.github.elizabethlfransen.lizlang.util.TextLocation
 sealed interface ASTExpression : ASTNode {
 }
 
-sealed interface InfixExpression<TLeft : ASTNode, TRight : ASTNode>: ASTExpression {
+sealed interface BinaryExpression<TLeft : ASTNode, TRight : ASTNode>: ASTExpression {
     val left: TLeft
     val right: TRight
 }
@@ -34,7 +34,7 @@ data class MultiplicationExpression(
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : InfixExpression<ASTExpression, ASTExpression>
+) : BinaryExpression<ASTExpression, ASTExpression>
 
 data class AdditionExpression(
     override val left: ASTExpression,
@@ -42,7 +42,7 @@ data class AdditionExpression(
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : InfixExpression<ASTExpression, ASTExpression>
+) : BinaryExpression<ASTExpression, ASTExpression>
 
 data class UnaryMinusExpression(
     override val child: ASTExpression,
@@ -106,4 +106,4 @@ data class CastExpression(
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-): InfixExpression<ASTExpression, ASTIdentifier>
+): BinaryExpression<ASTExpression, ASTIdentifier>

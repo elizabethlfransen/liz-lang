@@ -25,15 +25,15 @@ class UnaryExpressionVerifier<TNode: UnaryExpression<TChild>, TChild: ASTNode>(
     }
 }
 
-class BinaryExpressionVerifier<TNode: InfixExpression<TLeft, TRight>, TLeft: ASTNode, TRight : ASTNode>(
+class BinaryExpressionVerifier<TNode: BinaryExpression<TLeft, TRight>, TLeft: ASTNode, TRight : ASTNode>(
     nodeType: KClass<TNode>,
     private val leftVerifier: ASTVerifier<out TLeft>,
     private val rightVerifier: ASTVerifier<out TRight>
 ) : ASTVerifier<TNode>(nodeType) {
     override fun verify(node: Assert<TNode>) {
-        node.prop(InfixExpression<TLeft, TRight>::left)
+        node.prop(BinaryExpression<TLeft, TRight>::left)
             .let(leftVerifier::tryVerify)
-        node.prop(InfixExpression<TLeft, TRight>::right)
+        node.prop(BinaryExpression<TLeft, TRight>::right)
             .let(rightVerifier::tryVerify)
     }
 }
