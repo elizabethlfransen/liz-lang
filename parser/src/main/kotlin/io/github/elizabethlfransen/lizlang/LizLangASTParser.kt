@@ -1,10 +1,12 @@
 package io.github.elizabethlfransen.lizlang
 
 import io.github.elizabethlfransen.lizlang.ast.*
+import io.github.elizabethlfransen.lizlang.parser.LizLangLexer
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser.*
 import io.github.elizabethlfransen.lizlang.parser.LizLangParserBaseVisitor
 import org.antlr.v4.runtime.tree.TerminalNode
+import java.lang.IllegalArgumentException
 
 /**
  * This class is used to take the result from [LizLangParser] and generate a [ASTNode] which can be used in [ParserVisitor]
@@ -68,22 +70,12 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitMultiplyExp(ctx: MultiplyExpContext): MultiplicationExpression {
-        return buildASTFromContext(
-            ctx,
-            ctx.left.accept(this) as ASTExpression,
-            ctx.right.accept(this) as ASTExpression,
-            ::MultiplicationExpression
-        )
+    override fun visitUnaryExp(ctx: UnaryExpContext): ASTNode {
+        return UnaryExpressionFactory.buildExpression(this, ctx)
     }
 
-    override fun visitAddExp(ctx: AddExpContext): AdditionExpression {
-        return buildASTFromContext(
-            ctx,
-            ctx.left.accept(this) as ASTExpression,
-            ctx.right.accept(this) as ASTExpression,
-            ::AdditionExpression
-        )
+    override fun visitBinaryExp(ctx: BinaryExpContext): ASTNode {
+        return BinaryExpressionFactory.buildExpression(this, ctx)
     }
 
     override fun visitParenthesisExp(ctx: ParenthesisExpContext): ParenthesisExpression {
@@ -91,71 +83,6 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
             ctx,
             ctx.child.accept(this) as ASTExpression,
             ::ParenthesisExpression
-        )
-    }
-
-    override fun visitUnaryMinusExp(ctx: UnaryMinusExpContext): UnaryMinusExpression {
-        return buildASTFromContext(
-            ctx,
-            ctx.child.accept(this) as ASTExpression,
-            ::UnaryMinusExpression
-        )
-    }
-
-    override fun visitUnaryPlusExp(ctx: UnaryPlusExpContext): UnaryPlusExpression {
-        return buildASTFromContext(
-            ctx,
-            ctx.child.accept(this) as ASTExpression,
-            ::UnaryPlusExpression
-        )
-    }
-
-    override fun visitPostDecrementExp(ctx: PostDecrementExpContext): PostDecrementExpression {
-        return buildASTFromContext(
-            ctx,
-            ctx.child.accept(this) as ASTExpression,
-            ::PostDecrementExpression
-        )
-    }
-
-
-    override fun visitPostIncrementExp(ctx: PostIncrementExpContext): PostIncrementExpression {
-        return buildASTFromContext(
-            ctx,
-            ctx.child.accept(this) as ASTExpression,
-            ::PostIncrementExpression
-        )
-    }
-
-    override fun visitPreDecrementExp(ctx: PreDecrementExpContext): PreDecrementExpression {
-        return buildASTFromContext(
-            ctx,
-            ctx.child.accept(this) as ASTExpression,
-            ::PreDecrementExpression
-        )
-    }
-
-    override fun visitPreIncrementExp(ctx: PreIncrementExpContext) : PreIncrementExpression {
-        return buildASTFromContext(
-            ctx,
-            ctx.child.accept(this) as ASTExpression,
-            ::PreIncrementExpression
-        )
-    }
-
-    override fun visitLogicalNotExp(ctx: LogicalNotExpContext): ASTNode {
-        return buildASTFromContext(
-            ctx,
-            ctx.child.accept(this) as ASTExpression,
-            ::NotExpression
-        )
-    }
-
-    override fun visitBitwiseComplementExp(ctx: BitwiseComplementExpContext): BitwiseComplementExpression {
-        return buildASTFromContext(
-            ctx,
-            ctx.child.accept(this) as ASTExpression,
-            ::BitwiseComplementExpression
         )
     }
 
@@ -176,12 +103,19 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitDivideExpression(ctx: DivideExpressionContext): DivideExpression {
+    override fun visitPostIncDecExp(ctx: PostIncDecExpContext): ASTNode {
+        val builder = when(ctx.op.type) {
+            LizLangLexer.INCREMENT -> ::PostIncrementExpression
+            LizLangLexer.DECREMENT -> ::PostDecrementExpression
+            else -> {
+                val tokenName = LizLangLexer.VOCABULARY.getDisplayName(ctx.op.type)
+                throw IllegalArgumentException("Invalid token: $tokenName")
+            }
+        }
         return buildASTFromContext(
             ctx,
-            ctx.left.accept(this) as ASTExpression,
-            ctx.right.accept(this) as ASTExpression,
-            ::DivideExpression
+            ctx.child.accept(this) as ASTExpression,
+            builder
         )
     }
 }

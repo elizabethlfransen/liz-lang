@@ -8,19 +8,11 @@ program: expression EOF;
 
 expression
     : OPEN_PARENTHESIS child=expression CLOSE_PARENTHESIS # ParenthesisExp
-    | child=expression INCREMENT # PostIncrementExp
-    | child=expression DECREMENT # PostDecrementExp
-    | INCREMENT child=expression # PreIncrementExp
-    | DECREMENT child=expression # PreDecrementExp
+    | child=expression op=(INCREMENT|DECREMENT) # PostIncDecExp
+    | <assoc=right> op=(PLUS|MINUS|EXCLAMATION_MARK|GRAVE|INCREMENT|DECREMENT) child=expression # UnaryExp
     | left=expression AS right=identifier # CastExpression
-    | MINUS child=expression # UnaryMinusExp
-    | PLUS child=expression # UnaryPlusExp
-    | EXCLAMATION_MARK child=expression # LogicalNotExp
-    | GRAVE child=expression # BitwiseComplementExp
-    | left=expression STAR right=expression  # MultiplyExp
-    | left=expression FORWARD_SLASH right=expression # DivideExpression
-    | left=expression PERCENT right=expression # ModExpression
-    | left=expression PLUS right=expression # AddExp
+    | left=expression op=(STAR|FORWARD_SLASH|PERCENT) right=expression  # BinaryExp
+    | left=expression op=(PLUS|MINUS) right=expression # BinaryExp
     | literal # LiteralExp;
 
 
