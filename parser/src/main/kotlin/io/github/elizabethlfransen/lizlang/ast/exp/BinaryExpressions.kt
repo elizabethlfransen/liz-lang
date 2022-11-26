@@ -82,3 +82,31 @@ data class UnsignedShiftRightExpression(
     override val start: TextLocation,
     override val stop: TextLocation
 ): BinaryExpression<ASTExpression, ASTExpression>
+data class LessThanExpression(
+    override val left: ASTExpression,
+    override val right: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+): BinaryExpression<ASTExpression, ASTExpression>
+data class LessThanOrEqualToExpression(
+    override val left: ASTExpression,
+    override val right: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+): BinaryExpression<ASTExpression, ASTExpression>
+data class GreaterThanExpression(
+    override val left: ASTExpression,
+    override val right: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+): BinaryExpression<ASTExpression, ASTExpression>
+data class GreaterThanOrEqualToExpression(
+    override val left: ASTExpression,
+    override val right: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+): BinaryExpression<ASTExpression, ASTExpression>

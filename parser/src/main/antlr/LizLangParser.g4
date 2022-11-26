@@ -14,6 +14,7 @@ expression
     | left=expression op=(STAR|FORWARD_SLASH|PERCENT) right=expression  # BinaryExp
     | left=expression op=(PLUS|MINUS) right=expression # BinaryExp
     | left=expression op=(SHIFT_LEFT|SHIFT_RIGHT|UNSIGNED_SHIFT_RIGHT) right=expression # BinaryExp
+    | left=expression op=(LESS_THAN|LESS_THAN_OR_EQUAL_TO|GREATER_THAN|GREATER_THAN_OR_EQUAL_TO) right=expression # BinaryExp
     | literal # LiteralExp;
 
 

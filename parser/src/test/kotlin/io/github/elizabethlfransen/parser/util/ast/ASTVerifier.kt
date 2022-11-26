@@ -163,6 +163,23 @@ fun ushr(
     leftVerifier: ASTVerifier<out ASTExpression>,
     rightVerifier: ASTVerifier<out ASTExpression>
 ) = BinaryExpressionVerifier(UnsignedShiftRightExpression::class, leftVerifier, rightVerifier)
+fun lt(
+    leftVerifier: ASTVerifier<out ASTExpression>,
+    rightVerifier: ASTVerifier<out ASTExpression>
+) = BinaryExpressionVerifier(LessThanExpression::class, leftVerifier, rightVerifier)
+fun lte(
+    leftVerifier: ASTVerifier<out ASTExpression>,
+    rightVerifier: ASTVerifier<out ASTExpression>
+) = BinaryExpressionVerifier(LessThanOrEqualToExpression::class, leftVerifier, rightVerifier)
+fun gt(
+    leftVerifier: ASTVerifier<out ASTExpression>,
+    rightVerifier: ASTVerifier<out ASTExpression>
+) = BinaryExpressionVerifier(GreaterThanExpression::class, leftVerifier, rightVerifier)
+fun gte(
+    leftVerifier: ASTVerifier<out ASTExpression>,
+    rightVerifier: ASTVerifier<out ASTExpression>
+) = BinaryExpressionVerifier(GreaterThanOrEqualToExpression::class, leftVerifier, rightVerifier)
+
 
 fun Assert<ASTNode>.matches(verifier: ASTVerifier<*>) = let(verifier::tryVerify)
 

@@ -96,7 +96,11 @@ class GrammarTests {
         "-" to ::sub,
         "<<" to ::shl,
         ">>" to ::shr,
-        ">>>" to ::ushr
+        ">>>" to ::ushr,
+        "<" to ::lt,
+        "<=" to ::lte,
+        ">" to ::gt,
+        ">=" to ::gte
     ).mapToDynamicTest(
         displayName = { (op) -> "parser should support binary operator '$op'" }
     ) { (op, opVerifier) ->

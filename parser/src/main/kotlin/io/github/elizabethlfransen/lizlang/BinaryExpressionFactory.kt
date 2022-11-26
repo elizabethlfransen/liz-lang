@@ -25,6 +25,10 @@ internal object BinaryExpressionFactory {
         LizLangLexer.SHIFT_LEFT to ::ShiftLeftExpression,
         LizLangLexer.SHIFT_RIGHT to ::ShiftRightExpression,
         LizLangLexer.UNSIGNED_SHIFT_RIGHT to ::UnsignedShiftRightExpression,
+        LizLangLexer.LESS_THAN to ::LessThanExpression,
+        LizLangLexer.LESS_THAN_OR_EQUAL_TO to ::LessThanOrEqualToExpression,
+        LizLangLexer.GREATER_THAN to ::GreaterThanExpression,
+        LizLangLexer.GREATER_THAN_OR_EQUAL_TO to ::GreaterThanOrEqualToExpression
     )
 
     operator fun get(type: Int): BinaryExpressionBuilder {

@@ -48,6 +48,10 @@ NEW: 'new';
 UNSIGNED_SHIFT_RIGHT: '>>>';
 SHIFT_LEFT: '<<';
 SHIFT_RIGHT: '>>';
+LESS_THAN_OR_EQUAL_TO: '<=';
+LESS_THAN: '<';
+GREATER_THAN_OR_EQUAL_TO: '>=';
+GREATER_THAN: '>';
 
 // seperators
 OPEN_PARENTHESIS: '(';
