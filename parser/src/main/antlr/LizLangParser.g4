@@ -18,6 +18,7 @@ expression
     | EXCLAMATION_MARK child=expression # LogicalNotExp
     | GRAVE child=expression # BitwiseComplementExp
     | left=expression STAR right=expression  # MultiplyExp
+    | left=expression FORWARD_SLASH right=expression # DivideExpression
     | left=expression PLUS right=expression # AddExp
     | literal # LiteralExp;
 

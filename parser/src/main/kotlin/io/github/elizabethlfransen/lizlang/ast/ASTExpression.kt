@@ -107,3 +107,11 @@ data class CastExpression(
     override val start: TextLocation,
     override val stop: TextLocation
 ): BinaryExpression<ASTExpression, ASTIdentifier>
+
+data class DivideExpression(
+    override val left: ASTExpression,
+    override val right: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+): BinaryExpression<ASTExpression, ASTExpression>

@@ -269,4 +269,19 @@ class GrammarTests {
                 )
             )
     }
+
+    @Test
+    fun `parser should be able to handle divide`() {
+        assertThat("123 * 456 / 789")
+            .asAST(LizLangParser::expression)
+            .matches(
+                divide(
+                    mult(
+                        literalExp(123),
+                        literalExp(456)
+                    ),
+                    literalExp(789)
+                )
+            )
+    }
 }

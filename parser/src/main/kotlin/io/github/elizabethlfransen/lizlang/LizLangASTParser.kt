@@ -167,12 +167,21 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
         )
     }
 
-    override fun visitCastExpression(ctx: CastExpressionContext): ASTNode {
+    override fun visitCastExpression(ctx: CastExpressionContext): CastExpression {
         return buildASTFromContext(
             ctx,
             ctx.left.accept(this) as ASTExpression,
             ctx.right.let(this::visitIdentifier),
             ::CastExpression
+        )
+    }
+
+    override fun visitDivideExpression(ctx: DivideExpressionContext): DivideExpression {
+        return buildASTFromContext(
+            ctx,
+            ctx.left.accept(this) as ASTExpression,
+            ctx.right.accept(this) as ASTExpression,
+            ::DivideExpression
         )
     }
 }

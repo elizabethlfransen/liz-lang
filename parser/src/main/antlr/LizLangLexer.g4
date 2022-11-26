@@ -37,11 +37,13 @@ fragment HEX_NUMBER: HEX_PREFIX (HEX_NUMBER_WITH_UNDERSCORE | HEX_NUMBER_WITHOUT
 INCREMENT: '++';
 DECREMENT: '--';
 STAR: '*';
+FORWARD_SLASH: '/';
 PLUS: '+';
 MINUS: '-';
 EXCLAMATION_MARK: '!';
 GRAVE: '~';
 AS: 'as';
+NEW: 'new';
 
 // seperators
 OPEN_PARENTHESIS: '(';

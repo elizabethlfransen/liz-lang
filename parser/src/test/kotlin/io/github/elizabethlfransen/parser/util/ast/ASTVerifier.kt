@@ -2,15 +2,24 @@ package io.github.elizabethlfransen.parser.util.ast
 
 import assertk.Assert
 import assertk.assertions.isEqualTo
-import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
+import assertk.assertions.support.expected
+import assertk.assertions.support.show
 import io.github.elizabethlfransen.lizlang.ast.*
 import kotlin.reflect.KClass
+
+private fun <T : ASTNode> Assert<ASTNode>.isInstanceOfNode(type: KClass<T>) = transform(name) { actual ->
+    if(type.isInstance(actual)) {
+        @Suppress("UNCHECKED_CAST")
+        return@transform actual as T
+    }
+    expected("to be a ${show(type.simpleName)} node but was a ${show(actual::class.simpleName)} node")
+}
 
 abstract class ASTVerifier<TNode : ASTNode>(private val nodeType: KClass<TNode>) {
     abstract fun verify(node: Assert<TNode>)
     open fun tryVerify(node: Assert<ASTNode>) {
-        node.isInstanceOf(nodeType)
+        node.isInstanceOfNode(nodeType)
             .let(this::verify)
     }
 }
@@ -126,6 +135,11 @@ fun identifier(
 fun identifier(
     expectedIdentifier: String
 ) = identifier { actual -> actual.isEqualTo(expectedIdentifier) }
+
+fun divide(
+    leftVerifier: ASTVerifier<out ASTExpression>,
+    rightVerifier: ASTVerifier<out ASTExpression>
+) = BinaryExpressionVerifier(DivideExpression::class, leftVerifier, rightVerifier)
 
 fun Assert<ASTNode>.matches(verifier: ASTVerifier<*>) = let(verifier::tryVerify)
 
