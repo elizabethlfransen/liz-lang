@@ -36,8 +36,8 @@ fragment HEX_NUMBER: HEX_PREFIX (HEX_NUMBER_WITH_UNDERSCORE | HEX_NUMBER_WITHOUT
 // keywords
 AS: 'as';
 NEW: 'new';
-TRUE options { caseInsensitive=true; }: 'true';
-FALSE options { caseInsensitive=true; }: 'false';
+TRUE: 'true';
+FALSE: 'false';
 
 // Operators
 INCREMENT: '++';
