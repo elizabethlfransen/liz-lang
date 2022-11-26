@@ -26,6 +26,14 @@ data class AdditionExpression(
     override val stop: TextLocation
 ) : BinaryExpression<ASTExpression, ASTExpression>
 
+data class SubtractionExpression(
+    override val left: ASTExpression,
+    override val right: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+) : BinaryExpression<ASTExpression, ASTExpression>
+
 data class CastExpression(
     override val left: ASTExpression,
     override val right: ASTIdentifier,

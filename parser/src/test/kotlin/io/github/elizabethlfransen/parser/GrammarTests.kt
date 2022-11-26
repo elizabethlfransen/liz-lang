@@ -322,4 +322,16 @@ class GrammarTests {
                 )
             )
     }
+
+    @Test
+    fun `parser should accept minus`() {
+        assertThat("123 - 456")
+            .asAST(LizLangParser::expression)
+            .matches(
+                sub(
+                    literalExp(123),
+                    literalExp(456)
+                )
+            )
+    }
 }

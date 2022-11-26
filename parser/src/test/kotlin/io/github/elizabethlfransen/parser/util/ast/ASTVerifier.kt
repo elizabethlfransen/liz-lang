@@ -86,6 +86,10 @@ fun mod(
     rightVerifier: ASTVerifier<out ASTExpression>
 ) = BinaryExpressionVerifier(ModExpression::class, leftVerifier, rightVerifier)
 
+fun sub(
+    leftVerifier: ASTVerifier<out ASTExpression>,
+    rightVerifier: ASTVerifier<out ASTExpression>
+) = BinaryExpressionVerifier(SubtractionExpression::class, leftVerifier, rightVerifier)
 
 fun add(
     leftVerifier: ASTVerifier<out ASTExpression>,

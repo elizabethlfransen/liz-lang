@@ -20,13 +20,14 @@ internal object BinaryExpressionFactory {
         LizLangLexer.FORWARD_SLASH to ::DivideExpression,
         LizLangLexer.PERCENT to ::ModExpression,
         LizLangLexer.PLUS to ::AdditionExpression,
+        LizLangLexer.MINUS to ::SubtractionExpression
     )
 
     operator fun get(type: Int): BinaryExpressionBuilder {
         return expressionBuilders.getOrElse(type) {
             val tokenName = LizLangLexer.VOCABULARY.getDisplayName(type)
             throw IllegalArgumentException(
-                "No unary expression defined for token type $tokenName"
+                "No binary expression defined for token type $tokenName"
             )
         }
     }
