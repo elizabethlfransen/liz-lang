@@ -10,6 +10,7 @@ sealed interface ASTNode {
 }
 
 data class ASTIdentifier(
+    val identifier: String,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation,

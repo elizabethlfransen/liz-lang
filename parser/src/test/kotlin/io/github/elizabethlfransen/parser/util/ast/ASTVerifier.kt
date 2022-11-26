@@ -47,6 +47,15 @@ class LiteralVerifier(
     }
 }
 
+class IdentifierVerifier(
+    private val verifier: (Assert<String>) -> Unit
+) : ASTVerifier<ASTIdentifier>(ASTIdentifier::class) {
+    override fun verify(node: Assert<ASTIdentifier>) {
+        node.prop(ASTIdentifier::identifier)
+            .let(verifier)
+    }
+}
+
 fun literal(verifier: (Assert<*>) -> Unit) = LiteralVerifier(verifier)
 
 fun literal(expectedValue: Any?) = literal { actual ->
@@ -105,6 +114,18 @@ fun bnot(
     childVerifier: ASTVerifier<out ASTExpression>
 ) = UnaryExpressionVerifier(BitwiseComplementExpression::class, childVerifier)
 
+fun cast(
+    leftVerifier: ASTVerifier<out ASTExpression>,
+    rightVerifier: ASTVerifier<out ASTIdentifier>
+) = BinaryExpressionVerifier(CastExpression::class,leftVerifier, rightVerifier)
+
+fun identifier(
+    identifierVerifier: (Assert<String>) -> Unit
+) = IdentifierVerifier(identifierVerifier)
+
+fun identifier(
+    expectedIdentifier: String
+) = identifier { actual -> actual.isEqualTo(expectedIdentifier) }
 
 fun Assert<ASTNode>.matches(verifier: ASTVerifier<*>) = let(verifier::tryVerify)
 

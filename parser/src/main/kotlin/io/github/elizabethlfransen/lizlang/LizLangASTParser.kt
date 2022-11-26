@@ -158,5 +158,22 @@ open class LizLangASTParser : LizLangParserBaseVisitor<ASTNode>() {
             ::BitwiseComplementExpression
         )
     }
+
+    override fun visitIdentifier(ctx: IdentifierContext): ASTIdentifier {
+        return buildASTFromContext(
+            ctx,
+            ctx.IDENTIFIER().text,
+            ::ASTIdentifier
+        )
+    }
+
+    override fun visitCastExpression(ctx: CastExpressionContext): ASTNode {
+        return buildASTFromContext(
+            ctx,
+            ctx.left.accept(this) as ASTExpression,
+            ctx.right.let(this::visitIdentifier),
+            ::CastExpression
+        )
+    }
 }
 

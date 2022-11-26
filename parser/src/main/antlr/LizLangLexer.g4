@@ -41,6 +41,7 @@ PLUS: '+';
 MINUS: '-';
 EXCLAMATION_MARK: '!';
 GRAVE: '~';
+AS: 'as';
 
 // seperators
 OPEN_PARENTHESIS: '(';

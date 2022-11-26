@@ -12,6 +12,7 @@ expression
     | child=expression DECREMENT # PostDecrementExp
     | INCREMENT child=expression # PreIncrementExp
     | DECREMENT child=expression # PreDecrementExp
+    | left=expression AS right=identifier # CastExpression
     | MINUS child=expression # UnaryMinusExp
     | PLUS child=expression # UnaryPlusExp
     | EXCLAMATION_MARK child=expression # LogicalNotExp
@@ -20,6 +21,8 @@ expression
     | left=expression PLUS right=expression # AddExp
     | literal # LiteralExp;
 
+
+identifier: IDENTIFIER;
 
 literal
     : intLiteral

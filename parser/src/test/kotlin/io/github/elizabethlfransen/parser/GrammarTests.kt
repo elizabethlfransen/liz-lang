@@ -258,15 +258,15 @@ class GrammarTests {
     }
 
 
-//    @Test
-//    fun `parser should accept cast operator`() {
-//        assertThat("123 as Double")
-//            .asAST(LizLangParser::expression)
-//            .isExpression {
-//                cast {
-//                    int(123)
-//
-//                }
-//            }
-//    }
+    @Test
+    fun `parser should accept cast operator`() {
+        assertThat("123 as Double")
+            .asAST(LizLangParser::expression)
+            .matches(
+                cast(
+                    literalExp(123),
+                    identifier("Double")
+                )
+            )
+    }
 }
