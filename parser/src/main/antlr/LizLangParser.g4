@@ -13,6 +13,7 @@ expression
     | left=expression AS right=identifier # CastExpression
     | left=expression op=(STAR|FORWARD_SLASH|PERCENT) right=expression  # BinaryExp
     | left=expression op=(PLUS|MINUS) right=expression # BinaryExp
+    | left=expression op=(SHIFT_LEFT|SHIFT_RIGHT|UNSIGNED_SHIFT_RIGHT) right=expression # BinaryExp
     | literal # LiteralExp;
 
 

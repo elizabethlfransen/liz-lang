@@ -151,6 +151,19 @@ fun divide(
     rightVerifier: ASTVerifier<out ASTExpression>
 ) = BinaryExpressionVerifier(DivideExpression::class, leftVerifier, rightVerifier)
 
+fun shl(
+    leftVerifier: ASTVerifier<out ASTExpression>,
+    rightVerifier: ASTVerifier<out ASTExpression>
+) = BinaryExpressionVerifier(ShiftLeftExpression::class, leftVerifier, rightVerifier)
+fun shr(
+    leftVerifier: ASTVerifier<out ASTExpression>,
+    rightVerifier: ASTVerifier<out ASTExpression>
+) = BinaryExpressionVerifier(ShiftRightExpression::class, leftVerifier, rightVerifier)
+fun ushr(
+    leftVerifier: ASTVerifier<out ASTExpression>,
+    rightVerifier: ASTVerifier<out ASTExpression>
+) = BinaryExpressionVerifier(UnsignedShiftRightExpression::class, leftVerifier, rightVerifier)
+
 fun Assert<ASTNode>.matches(verifier: ASTVerifier<*>) = let(verifier::tryVerify)
 
 

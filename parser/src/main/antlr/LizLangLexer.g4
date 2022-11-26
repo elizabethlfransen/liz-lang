@@ -45,6 +45,9 @@ EXCLAMATION_MARK: '!';
 GRAVE: '~';
 AS: 'as';
 NEW: 'new';
+UNSIGNED_SHIFT_RIGHT: '>>>';
+SHIFT_LEFT: '<<';
+SHIFT_RIGHT: '>>';
 
 // seperators
 OPEN_PARENTHESIS: '(';

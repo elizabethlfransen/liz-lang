@@ -14,13 +14,17 @@ typealias BinaryExpressionBuilder = (
     start: TextLocation,
     stop: TextLocation
 ) -> BinaryExpression<ASTExpression, ASTExpression>
+
 internal object BinaryExpressionFactory {
     private val expressionBuilders: Map<Int, BinaryExpressionBuilder> = mapOf(
         LizLangLexer.STAR to ::MultiplicationExpression,
         LizLangLexer.FORWARD_SLASH to ::DivideExpression,
         LizLangLexer.PERCENT to ::ModExpression,
         LizLangLexer.PLUS to ::AdditionExpression,
-        LizLangLexer.MINUS to ::SubtractionExpression
+        LizLangLexer.MINUS to ::SubtractionExpression,
+        LizLangLexer.SHIFT_LEFT to ::ShiftLeftExpression,
+        LizLangLexer.SHIFT_RIGHT to ::ShiftRightExpression,
+        LizLangLexer.UNSIGNED_SHIFT_RIGHT to ::UnsignedShiftRightExpression,
     )
 
     operator fun get(type: Int): BinaryExpressionBuilder {
@@ -32,7 +36,10 @@ internal object BinaryExpressionFactory {
         }
     }
 
-    fun buildExpression(visitor: LizLangParserVisitor<*>, ctx: BinaryExpContext) : BinaryExpression<ASTExpression, ASTExpression> {
+    fun buildExpression(
+        visitor: LizLangParserVisitor<*>,
+        ctx: BinaryExpContext
+    ): BinaryExpression<ASTExpression, ASTExpression> {
         val builder = get(ctx.op.type)
         return buildASTFromContext(
             ctx,
