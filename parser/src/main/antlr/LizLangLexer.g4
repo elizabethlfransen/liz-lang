@@ -33,6 +33,12 @@ fragment HEX_NUMBER_WITH_UNDERSCORE: (HEX_DIGIT (HEX_DIGIT | UNDERSCORE)+ HEX_DI
 fragment HEX_NUMBER_WITHOUT_UNDERSCORE: HEX_DIGIT+;
 fragment HEX_NUMBER: HEX_PREFIX (HEX_NUMBER_WITH_UNDERSCORE | HEX_NUMBER_WITHOUT_UNDERSCORE);
 
+// keywords
+AS: 'as';
+NEW: 'new';
+TRUE options { caseInsensitive=true; }: 'true';
+FALSE options { caseInsensitive=true; }: 'false';
+
 // Operators
 INCREMENT: '++';
 DECREMENT: '--';
@@ -43,8 +49,6 @@ MINUS: '-';
 PERCENT: '%';
 EXCLAMATION_MARK: '!';
 GRAVE: '~';
-AS: 'as';
-NEW: 'new';
 UNSIGNED_SHIFT_RIGHT: '>>>';
 SHIFT_LEFT: '<<';
 SHIFT_RIGHT: '>>';
@@ -58,8 +62,6 @@ OPEN_PARENTHESIS: '(';
 CLOSE_PARENTHESIS: ')';
 
 // literals
-TRUE options { caseInsensitive=true; }: 'true';
-FALSE options { caseInsensitive=true; }: 'false';
 FLOAT: (DECIMAL_NUMBER | NUMBER) FLOAT_SUFFIX;
 DOUBLE: DECIMAL_NUMBER;
 INTEGER: NUMBER | HEX_NUMBER;
