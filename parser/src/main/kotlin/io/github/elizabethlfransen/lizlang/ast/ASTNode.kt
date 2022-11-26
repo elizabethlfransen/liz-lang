@@ -9,8 +9,14 @@ sealed interface ASTNode {
     val stop: TextLocation
 }
 
+data class ASTIdentifier(
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation,
+) : ASTNode
 
-fun <TAST,TValue> buildASTFromContext(
+
+fun <TAST, TValue> buildASTFromContext(
     context: ParserRuleContext,
     value: TValue,
     builder: (value: TValue, text: String, start: TextLocation, stop: TextLocation) -> TAST
@@ -18,7 +24,7 @@ fun <TAST,TValue> buildASTFromContext(
     builder(value, text, start, stop)
 }
 
-fun <TAST,TLeft,TRight> buildASTFromContext(
+fun <TAST, TLeft, TRight> buildASTFromContext(
     context: ParserRuleContext,
     left: TLeft,
     right: TRight,

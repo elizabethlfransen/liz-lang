@@ -5,28 +5,28 @@ import io.github.elizabethlfransen.lizlang.util.TextLocation
 sealed interface ASTExpression : ASTNode {
 }
 
-sealed interface InfixExpression: ASTExpression {
-    val left: ASTExpression
-    val right: ASTExpression
+sealed interface InfixExpression<TLeft : ASTNode, TRight : ASTNode>: ASTExpression {
+    val left: TLeft
+    val right: TRight
 }
 
-sealed interface UnaryExpression : ASTExpression {
-    val child : ASTExpression
+sealed interface UnaryExpression<TChild : ASTNode> : ASTExpression {
+    val child : TChild
 }
 
 data class LiteralExpression(
-    val child: ASTLiteral<*>,
+    override val child: ASTLiteral<*>,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : ASTExpression
+) : UnaryExpression<ASTLiteral<*>>
 
 data class ParenthesisExpression(
     override val child: ASTExpression,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : UnaryExpression
+) : UnaryExpression<ASTExpression>
 
 data class MultiplicationExpression(
     override val left: ASTExpression,
@@ -34,7 +34,7 @@ data class MultiplicationExpression(
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : InfixExpression
+) : InfixExpression<ASTExpression, ASTExpression>
 
 data class AdditionExpression(
     override val left: ASTExpression,
@@ -42,67 +42,68 @@ data class AdditionExpression(
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : InfixExpression
+) : InfixExpression<ASTExpression, ASTExpression>
 
 data class UnaryMinusExpression(
     override val child: ASTExpression,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : UnaryExpression
+) : UnaryExpression<ASTExpression>
 
 data class UnaryPlusExpression(
     override val child: ASTExpression,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : UnaryExpression
+) : UnaryExpression<ASTExpression>
 
 data class PostIncrementExpression(
     override val child: ASTExpression,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : UnaryExpression
+) : UnaryExpression<ASTExpression>
 
 data class PostDecrementExpression(
     override val child: ASTExpression,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : UnaryExpression
+) : UnaryExpression<ASTExpression>
 
 data class PreIncrementExpression(
     override val child: ASTExpression,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : UnaryExpression
+) : UnaryExpression<ASTExpression>
 
 data class PreDecrementExpression(
     override val child: ASTExpression,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : UnaryExpression
+) : UnaryExpression<ASTExpression>
 
 data class NotExpression(
     override val child: ASTExpression,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : UnaryExpression
+) : UnaryExpression<ASTExpression>
 
 data class BitwiseComplementExpression(
     override val child: ASTExpression,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-) : UnaryExpression
+) : UnaryExpression<ASTExpression>
 
 data class CastExpression(
-    override val child: ASTExpression,
+    override val left: ASTExpression,
+    override val right: ASTIdentifier,
     override val text: String,
     override val start: TextLocation,
     override val stop: TextLocation
-): UnaryExpression
+): InfixExpression<ASTExpression, ASTIdentifier>
