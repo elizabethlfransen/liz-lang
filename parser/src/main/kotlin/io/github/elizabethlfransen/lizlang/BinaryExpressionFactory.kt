@@ -1,6 +1,7 @@
 package io.github.elizabethlfransen.lizlang
 
 import io.github.elizabethlfransen.lizlang.ast.*
+import io.github.elizabethlfransen.lizlang.ast.exp.*
 import io.github.elizabethlfransen.lizlang.parser.LizLangLexer
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser.BinaryExpContext
 import io.github.elizabethlfransen.lizlang.parser.LizLangParserVisitor
@@ -12,11 +13,12 @@ typealias BinaryExpressionBuilder = (
     text: String,
     start: TextLocation,
     stop: TextLocation
-) -> BinaryExpression<ASTExpression,ASTExpression>
+) -> BinaryExpression<ASTExpression, ASTExpression>
 internal object BinaryExpressionFactory {
     private val expressionBuilders: Map<Int, BinaryExpressionBuilder> = mapOf(
         LizLangLexer.STAR to ::MultiplicationExpression,
         LizLangLexer.FORWARD_SLASH to ::DivideExpression,
+        LizLangLexer.PERCENT to ::ModExpression,
         LizLangLexer.PLUS to ::AdditionExpression,
     )
 
@@ -29,7 +31,7 @@ internal object BinaryExpressionFactory {
         }
     }
 
-    fun buildExpression(visitor: LizLangParserVisitor<*>, ctx: BinaryExpContext) : BinaryExpression<ASTExpression,ASTExpression> {
+    fun buildExpression(visitor: LizLangParserVisitor<*>, ctx: BinaryExpContext) : BinaryExpression<ASTExpression, ASTExpression> {
         val builder = get(ctx.op.type)
         return buildASTFromContext(
             ctx,

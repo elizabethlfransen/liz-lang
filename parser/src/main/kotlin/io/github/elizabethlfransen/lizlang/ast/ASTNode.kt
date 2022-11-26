@@ -3,10 +3,13 @@ package io.github.elizabethlfransen.lizlang.ast
 import io.github.elizabethlfransen.lizlang.util.TextLocation
 import org.antlr.v4.runtime.ParserRuleContext
 
-sealed interface ASTNode {
+interface ASTNode {
     val text: String
     val start: TextLocation
     val stop: TextLocation
+}
+
+interface ASTExpression : ASTNode {
 }
 
 data class ASTIdentifier(
@@ -42,3 +45,4 @@ fun <T> buildASTFromContext(
     TextLocation.fromToken(context.start),
     TextLocation.fromToken(context.stop)
 )
+

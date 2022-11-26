@@ -310,4 +310,16 @@ class GrammarTests {
                 )
             )
     }
+
+    @Test
+    fun `parser should accept mod`() {
+        assertThat("123 % 4")
+            .asAST(LizLangParser::expression)
+            .matches(
+                mod(
+                    literalExp(123),
+                    literalExp(4)
+                )
+            )
+    }
 }

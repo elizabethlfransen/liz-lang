@@ -6,6 +6,7 @@ import assertk.assertions.prop
 import assertk.assertions.support.expected
 import assertk.assertions.support.show
 import io.github.elizabethlfransen.lizlang.ast.*
+import io.github.elizabethlfransen.lizlang.ast.exp.*
 import kotlin.reflect.KClass
 
 private fun <T : ASTNode> Assert<ASTNode>.isInstanceOfNode(type: KClass<T>) = transform(name) { actual ->
@@ -79,6 +80,11 @@ fun mult(
     leftVerifier: ASTVerifier<out ASTExpression>,
     rightVerifier: ASTVerifier<out ASTExpression>
 ) = BinaryExpressionVerifier(MultiplicationExpression::class,leftVerifier, rightVerifier)
+
+fun mod(
+    leftVerifier: ASTVerifier<out ASTExpression>,
+    rightVerifier: ASTVerifier<out ASTExpression>
+) = BinaryExpressionVerifier(ModExpression::class, leftVerifier, rightVerifier)
 
 
 fun add(

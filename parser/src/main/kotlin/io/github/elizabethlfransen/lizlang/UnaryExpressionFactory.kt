@@ -1,8 +1,8 @@
 package io.github.elizabethlfransen.lizlang
 
 import io.github.elizabethlfransen.lizlang.ast.ASTExpression
-import io.github.elizabethlfransen.lizlang.ast.UnaryExpression
 import io.github.elizabethlfransen.lizlang.ast.*
+import io.github.elizabethlfransen.lizlang.ast.exp.*
 import io.github.elizabethlfransen.lizlang.parser.LizLangLexer
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser.UnaryExpContext
 import io.github.elizabethlfransen.lizlang.parser.LizLangParserVisitor

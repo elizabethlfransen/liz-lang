@@ -1,6 +1,7 @@
 package io.github.elizabethlfransen.lizlang
 
 import io.github.elizabethlfransen.lizlang.ast.*
+import io.github.elizabethlfransen.lizlang.ast.exp.*
 import io.github.elizabethlfransen.lizlang.parser.LizLangLexer
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser
 import io.github.elizabethlfransen.lizlang.parser.LizLangParser.*

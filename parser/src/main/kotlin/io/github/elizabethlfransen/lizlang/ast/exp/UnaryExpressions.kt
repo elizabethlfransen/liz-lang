@@ -1,14 +1,9 @@
-package io.github.elizabethlfransen.lizlang.ast
+package io.github.elizabethlfransen.lizlang.ast.exp
 
+import io.github.elizabethlfransen.lizlang.ast.ASTExpression
+import io.github.elizabethlfransen.lizlang.ast.ASTLiteral
+import io.github.elizabethlfransen.lizlang.ast.ASTNode
 import io.github.elizabethlfransen.lizlang.util.TextLocation
-
-sealed interface ASTExpression : ASTNode {
-}
-
-sealed interface BinaryExpression<TLeft : ASTNode, TRight : ASTNode>: ASTExpression {
-    val left: TLeft
-    val right: TRight
-}
 
 sealed interface UnaryExpression<TChild : ASTNode> : ASTExpression {
     val child : TChild
@@ -27,22 +22,6 @@ data class ParenthesisExpression(
     override val start: TextLocation,
     override val stop: TextLocation
 ) : UnaryExpression<ASTExpression>
-
-data class MultiplicationExpression(
-    override val left: ASTExpression,
-    override val right: ASTExpression,
-    override val text: String,
-    override val start: TextLocation,
-    override val stop: TextLocation
-) : BinaryExpression<ASTExpression, ASTExpression>
-
-data class AdditionExpression(
-    override val left: ASTExpression,
-    override val right: ASTExpression,
-    override val text: String,
-    override val start: TextLocation,
-    override val stop: TextLocation
-) : BinaryExpression<ASTExpression, ASTExpression>
 
 data class UnaryMinusExpression(
     override val child: ASTExpression,
@@ -99,19 +78,3 @@ data class BitwiseComplementExpression(
     override val start: TextLocation,
     override val stop: TextLocation
 ) : UnaryExpression<ASTExpression>
-
-data class CastExpression(
-    override val left: ASTExpression,
-    override val right: ASTIdentifier,
-    override val text: String,
-    override val start: TextLocation,
-    override val stop: TextLocation
-): BinaryExpression<ASTExpression, ASTIdentifier>
-
-data class DivideExpression(
-    override val left: ASTExpression,
-    override val right: ASTExpression,
-    override val text: String,
-    override val start: TextLocation,
-    override val stop: TextLocation
-): BinaryExpression<ASTExpression, ASTExpression>
