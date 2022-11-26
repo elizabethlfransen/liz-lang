@@ -40,6 +40,7 @@ STAR: '*';
 FORWARD_SLASH: '/';
 PLUS: '+';
 MINUS: '-';
+PERCENT: '%';
 EXCLAMATION_MARK: '!';
 GRAVE: '~';
 AS: 'as';

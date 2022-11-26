@@ -284,4 +284,30 @@ class GrammarTests {
                 )
             )
     }
+
+    @Test
+    fun `parser should respect left to right for multiply and divide`() {
+        assertThat("123 * 456 / 789")
+            .asAST(LizLangParser::expression)
+            .matches(
+                divide(
+                    mult(
+                        literalExp(123),
+                        literalExp(456)
+                    ),
+                    literalExp(789)
+                )
+            )
+        assertThat("123 / 456 * 789")
+            .asAST(LizLangParser::expression)
+            .matches(
+                mult(
+                    divide(
+                        literalExp(123),
+                        literalExp(456)
+                    ),
+                    literalExp(789)
+                )
+            )
+    }
 }
