@@ -58,3 +58,27 @@ data class ModExpression(
     override val start: TextLocation,
     override val stop: TextLocation
 ): BinaryExpression<ASTExpression, ASTExpression>
+
+data class ShiftLeftExpression(
+    override val left: ASTExpression,
+    override val right: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+): BinaryExpression<ASTExpression, ASTExpression>
+
+data class ShiftRightExpression(
+    override val left: ASTExpression,
+    override val right: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+): BinaryExpression<ASTExpression, ASTExpression>
+
+data class UnsignedShiftRightExpression(
+    override val left: ASTExpression,
+    override val right: ASTExpression,
+    override val text: String,
+    override val start: TextLocation,
+    override val stop: TextLocation
+): BinaryExpression<ASTExpression, ASTExpression>

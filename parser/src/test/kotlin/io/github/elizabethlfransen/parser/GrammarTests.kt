@@ -87,64 +87,57 @@ class GrammarTests {
             )
     }
 
-    @Test
-    fun `given a simple multiplication then the parser should be able to parse it`() {
-        assertThat("123 * 12")
+    @TestFactory
+    fun `parser should support binary functions`() = listOf(
+        "*" to ::mult,
+        "/" to ::divide,
+        "%" to ::mod,
+        "+" to ::add,
+        "-" to ::sub
+    ).mapToDynamicTest(
+        displayName = { (op) -> "parser should support binary operator '$op'" }
+    ) { (op, opVerifier) ->
+        assertThat("123 $op 456")
             .asAST(LizLangParser::expression)
             .matches(
-                mult(
+                opVerifier(
                     literalExp(123),
-                    literalExp(12)
+                    literalExp(456)
                 )
             )
     }
 
-    @Test
-    fun `given a multiple multiplication then the parser should be able to parse it`() {
-        assertThat("123 * 12 * 3 * 45")
+    @TestFactory
+    fun `parser should accept post unary functions`() = listOf(
+        "++" to ::postIncrement,
+        "--" to ::postDecrement
+    ).mapToDynamicTest(
+        displayName = { (op) -> "parser should support post-unary operator '$op'" }
+    ) { (op, opVerifier) ->
+        assertThat("123 $op")
             .asAST(LizLangParser::expression)
             .matches(
-                mult(
-                    mult(
-                        mult(
-                            literalExp(123),
-                            literalExp(12)
-                        ),
-                        literalExp(3)
-                    ),
-                    literalExp(45)
+                opVerifier(
+                    literalExp(123)
                 )
             )
     }
 
-    @Test
-    fun `parser should be able to parse an addition expression`() {
-        assertThat("123 + 456 + 789")
+    @TestFactory
+    fun `parser should accept pre unary functions`() = listOf(
+        "-" to ::unaryMinus,
+        "+" to ::unaryPlus,
+        "!" to ::not,
+        "~" to ::bnot,
+        "++" to ::preIncrement,
+        "--" to ::preDecrement
+    ).mapToDynamicTest(
+        displayName = { (op) -> "parser should support pre-unary operator '$op'" }
+    ) { (op, opVerifier) ->
+        assertThat("$op 123")
             .asAST(LizLangParser::expression)
             .matches(
-                add(
-                    add(
-                        literalExp(123),
-                        literalExp(456)
-                    ),
-                    literalExp(789)
-                )
-            )
-    }
-
-    @Test
-    fun `parser should priorities multiplication over addition`() {
-        assertThat("123 + 456 * 789 + 123")
-            .asAST(LizLangParser::expression)
-            .matches(
-                add(
-                    add(
-                        literalExp(123),
-                        mult(
-                            literalExp(456),
-                            literalExp(789),
-                        )
-                    ),
+                opVerifier(
                     literalExp(123)
                 )
             )
@@ -165,100 +158,6 @@ class GrammarTests {
     }
 
     @Test
-    fun `parser should accept unary minus`() {
-        assertThat("- 1")
-            .asAST(LizLangParser::expression)
-            .matches(
-                unaryMinus(
-                    literalExp(1)
-                )
-            )
-    }
-
-    @Test
-    fun `parser should accept unary plus`() {
-        assertThat("+ 1")
-            .asAST(LizLangParser::expression)
-            .matches(
-                unaryPlus(
-                    literalExp(1)
-                )
-            )
-    }
-
-    @Test
-    fun `unary operators should be right associative`() {
-        assertThat("+ 1 + - 2")
-            .asAST(LizLangParser::expression)
-            .matches(
-                add(
-                    unaryPlus(
-                        literalExp(1)
-                    ),
-                    unaryMinus(
-                        literalExp(2)
-                    )
-                )
-            )
-    }
-
-    @Test
-    fun `parser should accept post increment and decrement`() {
-        assertThat("123 ++ + 123--")
-            .asAST(LizLangParser::expression)
-            .matches(
-                add(
-                    postIncrement(
-                        literalExp(123)
-                    ),
-                    postDecrement(
-                        literalExp(123)
-                    )
-                )
-            )
-    }
-
-
-    @Test
-    fun `parser should accept pre increment and decrement`() {
-        assertThat("++ 123 + -- 123")
-            .asAST(LizLangParser::expression)
-            .matches(
-                add(
-                    preIncrement(
-                        literalExp(123)
-                    ),
-                    preDecrement(
-                        literalExp(123)
-                    )
-                )
-            )
-    }
-
-    @Test
-    fun `parser should accept not`() {
-        assertThat("!123")
-            .asAST(LizLangParser::expression)
-            .matches(
-                not(
-                    literalExp(123)
-                )
-            )
-    }
-
-    @Test
-    fun `parser should accept bitwise complement`() {
-        assertThat("~123")
-            .asAST(LizLangParser::expression)
-            .matches(
-                bnot(
-                    literalExp(123)
-                )
-            )
-    }
-
-
-    @Test
     fun `parser should accept cast operator`() {
         assertThat("123 as Double")
             .asAST(LizLangParser::expression)
@@ -266,71 +165,6 @@ class GrammarTests {
                 cast(
                     literalExp(123),
                     identifier("Double")
-                )
-            )
-    }
-
-    @Test
-    fun `parser should be able to handle divide`() {
-        assertThat("123 * 456 / 789")
-            .asAST(LizLangParser::expression)
-            .matches(
-                divide(
-                    mult(
-                        literalExp(123),
-                        literalExp(456)
-                    ),
-                    literalExp(789)
-                )
-            )
-    }
-
-    @Test
-    fun `parser should respect left to right for multiply and divide`() {
-        assertThat("123 * 456 / 789")
-            .asAST(LizLangParser::expression)
-            .matches(
-                divide(
-                    mult(
-                        literalExp(123),
-                        literalExp(456)
-                    ),
-                    literalExp(789)
-                )
-            )
-        assertThat("123 / 456 * 789")
-            .asAST(LizLangParser::expression)
-            .matches(
-                mult(
-                    divide(
-                        literalExp(123),
-                        literalExp(456)
-                    ),
-                    literalExp(789)
-                )
-            )
-    }
-
-    @Test
-    fun `parser should accept mod`() {
-        assertThat("123 % 4")
-            .asAST(LizLangParser::expression)
-            .matches(
-                mod(
-                    literalExp(123),
-                    literalExp(4)
-                )
-            )
-    }
-
-    @Test
-    fun `parser should accept minus`() {
-        assertThat("123 - 456")
-            .asAST(LizLangParser::expression)
-            .matches(
-                sub(
-                    literalExp(123),
-                    literalExp(456)
                 )
             )
     }
